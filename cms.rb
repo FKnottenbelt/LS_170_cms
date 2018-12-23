@@ -20,5 +20,6 @@ end
 
 ######### routes #########
 get '/' do
-  "Getting started."
+  @documents = Dir.glob('./data/*').map { |file| File.basename(file) }.sort
+  erb :documents, layout: :layout
 end

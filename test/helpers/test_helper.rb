@@ -5,7 +5,7 @@ Minitest::Reporters.use!
 require 'minitest/autorun'
 require 'capybara/minitest'
 
-require_relative '../../app.rb'
+require_relative '../../cms.rb'
 
 class CapybaraTestCase < Minitest::Test
   include Capybara::DSL
