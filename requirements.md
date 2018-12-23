@@ -19,3 +19,16 @@ When a user visits the home page, they should see a list of the
 documents in the CMS: history.txt, changes.txt and about.txt:
 unorderd list of files when visiting '/'
 nb: this have to be actual files in the file system
+
+### Requirement 3
+When a user visits the index page, they are presented with a list of
+links, one for each document in the CMS.
+
+When a user clicks on a document link in the index, they should be
+taken to a page that displays the content of the file whose name was
+clicked.
+
+When a user visits the path /history.txt, they will be presented
+with the content of the document history.txt.
+
+The browser should render a text file as a plain text file.
