@@ -4,7 +4,11 @@
 
   </head>
   <body>
-    <%= yield_content :flash_message %>
+
+    <% if session[:message] %>
+    <%= session.delete(:message) %>
+    <% end %>
+
     <main>
       <%== yield %>
     </main>
