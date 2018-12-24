@@ -32,3 +32,8 @@ When a user visits the path /history.txt, they will be presented
 with the content of the document history.txt.
 
 The browser should render a text file as a plain text file.
+
+### Requirement 4
+Write tests for the routes that the application already supports.
+Run them and you should see something similar to this:
+2 runs, 12 assertions
