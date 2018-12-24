@@ -1,3 +1,7 @@
+<% content_for :flash_message do %>
+  <%= session.delete :error %>
+<% end %>
+
 <ul>
   <% @files.each do |file| %>
     <a href='/<%= file %>'>

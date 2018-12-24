@@ -2,6 +2,8 @@ require 'sinatra'
 require "sinatra/reloader" if development?
 require "tilt/erubis"
 require 'bundler/setup'
+require 'sinatra/content_for'
+require 'pry' if development?
 
 ########## setup ######
 configure do
@@ -30,5 +32,12 @@ end
 
 get '/:file' do
   headers["Content-Type"] = "text/plain"
-  @file = File.read("./data/#{params[:file]}")
+  file_found = !Dir.glob("./data/#{params[:file]}").empty?
+
+  if file_found
+    @file = File.read("./data/#{params[:file]}")
+  else
+    session[:error] = "#{params[:file]} does not exist."
+    redirect '/'
+  end
 end

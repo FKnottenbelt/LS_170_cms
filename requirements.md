@@ -37,3 +37,12 @@ The browser should render a text file as a plain text file.
 Write tests for the routes that the application already supports.
 Run them and you should see something similar to this:
 2 runs, 12 assertions
+
+### Requirement 5
+When a user attempts to view a document that does not exist, they
+should be redirected to the index page and shown the message:
+$DOCUMENT does not exist.:
+message and underneath the ordered list of files
+
+When the user reloads the index page after seeing an error message,
+the message should go away.

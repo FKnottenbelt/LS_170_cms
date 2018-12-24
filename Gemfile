@@ -11,6 +11,7 @@ group :development, :test do
   gem 'capybara'
   gem 'rake'
   gem 'minitest-reporters'
+  gem 'pry'
 end
 
 group :production do
