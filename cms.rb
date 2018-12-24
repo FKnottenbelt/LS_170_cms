@@ -37,7 +37,7 @@ get '/:file' do
   if file_found
     @file = File.read("./data/#{params[:file]}")
   else
-    session[:error] = "#{params[:file]} does not exist."
+    session[:message] = "#{params[:file]} does not exist."
     redirect '/'
   end
 end
