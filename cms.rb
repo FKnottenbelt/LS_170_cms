@@ -4,6 +4,7 @@ require "tilt/erubis"
 require 'bundler/setup'
 require 'sinatra/content_for'
 require 'pry' if development?
+require 'redcarpet'
 
 ########## setup ######
 configure do
@@ -31,13 +32,19 @@ get '/' do
 end
 
 get '/:file' do
+  file_name = params[:file]
   headers["Content-Type"] = "text/plain"
-  file_found = !Dir.glob("./data/#{params[:file]}").empty?
+  file_found = !Dir.glob("./data/#{file_name}").empty?
 
   if file_found
-    @file = File.read("./data/#{params[:file]}")
+    @file = File.read("./data/#{file_name}")
+    return @file unless file_name =~ /.md/
+
+    headers["Content-Type"] = "text/html"
+    markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML)
+    markdown.render(@file)
   else
-    session[:message] = "#{params[:file]} does not exist."
+    session[:message] = "#{file_name} does not exist."
     redirect '/'
   end
 end

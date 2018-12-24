@@ -46,3 +46,7 @@ message and underneath the ordered list of files
 
 When the user reloads the index page after seeing an error message,
 the message should go away.
+
+### Requirement 6
+When a user views a document written in Markdown format, the browser
+should render the rendered HTML version of the document's content.

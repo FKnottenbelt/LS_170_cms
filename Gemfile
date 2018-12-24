@@ -3,6 +3,7 @@ source "https://rubygems.org"
 gem 'sinatra', '~>2.0.4'
 gem 'sinatra-contrib'
 gem 'erubis'
+gem 'redcarpet'
 
 ruby '2.4.1'
 

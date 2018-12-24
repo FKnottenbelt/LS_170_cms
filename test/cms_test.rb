@@ -1,5 +1,5 @@
 require_relative './racktest_helper'
-require 'pry'
+
 class CmsTest < RackTestCase
 
   def test_rake_test_have_run
@@ -15,7 +15,7 @@ class CmsTest < RackTestCase
     assert_includes(last_response.body, "history.txt")
   end
 
-  def test_file_page
+  def test_file_page_file_renders_as_plain_tekst
     get "/about.txt"
     assert_equal 200, last_response.status
     assert_equal "text/plain", last_response["Content-Type"]
@@ -32,5 +32,12 @@ class CmsTest < RackTestCase
 
     get "/"
     refute_includes(last_response.body, "nonexisting.txt does not exist")
+  end
+
+  def test_markdown_file_renders_as_html
+    get "/requirement6.md"
+    assert_equal 200, last_response.status
+    assert_equal "text/html", last_response["Content-Type"]
+    assert_includes last_response.body, "<em>Gemfile</em>"
   end
 end
