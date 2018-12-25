@@ -18,7 +18,7 @@ class CmsTest < RackTestCase
   def test_file_page_file_renders_as_plain_tekst
     get "/about.txt"
     assert_equal 200, last_response.status
-    assert_equal "text/plain", last_response["Content-Type"]
+    assert_equal "text/plain;charset=utf-8", last_response["Content-Type"]
     assert_includes(last_response.body, "Ruby was influenced by Perl")
   end
 
@@ -37,7 +37,7 @@ class CmsTest < RackTestCase
   def test_markdown_file_renders_as_html
     get "/requirement6.md"
     assert_equal 200, last_response.status
-    assert_equal "text/html", last_response["Content-Type"]
+    assert_equal "text/html;charset=utf-8", last_response["Content-Type"]
     assert_includes last_response.body, "<em>Gemfile</em>"
   end
 end
