@@ -4,8 +4,9 @@
 
 <ul>
   <% @files.each do |file| %>
-    <a href='/<%= file %>'>
-      <li><%= file %></li>
-    </a>
+    <li>
+      <a href='/<%= file %>'><%= file %></a>
+      <a class='edit' href='/<%= file %>/edit'>Edit</a></a>
+    </li>
   <% end %>
 </ul>

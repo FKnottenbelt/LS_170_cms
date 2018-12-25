@@ -56,3 +56,8 @@ get '/:file' do
     redirect '/'
   end
 end
+
+get '/:file/edit' do
+  @file_name = params[:file]
+  erb :file_edit, layout: :layout
+end
