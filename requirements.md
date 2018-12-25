@@ -50,3 +50,23 @@ the message should go away.
 ### Requirement 6
 When a user views a document written in Markdown format, the browser
 should render the rendered HTML version of the document's content.
+
+### Requirement 7
+When a user views the index page, they should see an “Edit” link next
+to each document name.
+
+When a user clicks an edit link, they should be taken to an edit page
+for the appropriate document.
+
+When a user views the edit page for a document, that document's
+content should appear within a textarea:
+- url looks like: /changes.txt/edit
+- label: Edit content of changes.txt:
+- then there is a big textbox that has a placeholder "Documents can
+  be edited now"
+- underneath the left bottom of the textbox there is a button
+  'Save changes'
+
+When a user edits the document's content and clicks a “Save Changes”
+button, they are redirected to the index page and are shown a
+message: '$FILENAME has been updated.'.
