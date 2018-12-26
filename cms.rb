@@ -35,7 +35,6 @@ end
 
 def get_file_content(file_name)
   @file = File.read("./data/#{file_name}")
-  headers["Content-Type"] = "text/plain;charset=utf-8"
   return @file unless file_name =~ /.md/
   render_markdown(@file)
 end
@@ -48,6 +47,7 @@ end
 get '/:file' do
   file_name = params[:file]
   file_found = File.exist?("./data/#{file_name}")
+  headers["Content-Type"] = "text/plain;charset=utf-8"
 
   if file_found
     get_file_content(file_name)
@@ -59,5 +59,6 @@ end
 
 get '/:file/edit' do
   @file_name = params[:file]
+  @file_content =  @file = File.read("./data/#{@file_name}")
   erb :file_edit, layout: :layout
 end
