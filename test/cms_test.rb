@@ -40,4 +40,24 @@ class CmsTest < RackTestCase
     assert_equal "text/html;charset=utf-8", last_response["Content-Type"]
     assert_includes last_response.body, "<em>Gemfile</em>"
   end
+
+  def test_edit_text
+    get "/test.txt/edit"
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "Edit content of test.txt"
+    assert_includes last_response.body, "Documents can be edited now"
+  end
+
+  def test_update_text
+    post "/test.txt/edit", edit_box: "Did it!"
+    assert_equal 302, last_response.status
+
+    get last_response["Location"]
+    assert_includes last_response.body, "test.txt has been updated"
+    assert_equal 200, last_response.status
+
+    get "/test.txt"
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "Did it!"
+  end
 end

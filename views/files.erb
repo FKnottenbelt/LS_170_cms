@@ -5,8 +5,8 @@
 <ul>
   <% @files.each do |file| %>
     <li>
-      <a href='/<%= file %>'><%= file %></a>
-      <a class='edit' href='/<%= file %>/edit'>Edit</a></a>
+      <a id='file' href='/<%= file %>'><%= file %></a>
+      <a id='edit' class='edit' href='/<%= file %>/edit'>Edit</a>
     </li>
   <% end %>
 </ul>
