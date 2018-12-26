@@ -62,3 +62,9 @@ get '/:file/edit' do
   @file_content =  @file = File.read("./data/#{@file_name}")
   erb :file_edit, layout: :layout
 end
+
+post '/:file/edit' do
+  @file_name = params[:file]
+  @file_content = params[:edit_box]
+  "#{@file_content}"
+end
