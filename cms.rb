@@ -66,5 +66,10 @@ end
 post '/:file/edit' do
   @file_name = params[:file]
   @file_content = params[:edit_box]
-  "#{@file_content}"
+  File.open(("./data/#{@file_name}"), 'w') do |f|
+     f.write @file_content
+  end
+
+  session[:message] = "#{@file_name} has been updated."
+  redirect '/'
 end
