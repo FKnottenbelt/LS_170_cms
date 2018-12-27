@@ -60,4 +60,5 @@ class CmsTest < RackTestCase
     assert_equal 200, last_response.status
     assert_includes last_response.body, "Did it!"
   end
+
 end

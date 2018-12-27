@@ -14,7 +14,8 @@ configure do
 end
 
 before do
-  @files ||= Dir.glob('./data/*').map { |file| File.basename(file) }.sort
+  path_pattern = File.join(data_path, "*")
+  @files ||= Dir.glob(path_pattern).map { |file| File.basename(file) }.sort
 end
 
 ######### view helpers #########
@@ -33,10 +34,18 @@ def render_markdown(file)
   markdown.render(file)
 end
 
-def get_file_content(file_name)
-  @file = File.read("./data/#{file_name}")
-  return @file unless file_name =~ /.md/
+def get_file_content(file_path)
+  @file = File.read(file_path)
+  return @file unless file_path =~ /.md/
   render_markdown(@file)
+end
+
+def data_path # get absolute path
+  if ENV["RACK_ENV"] == "test"
+    File.expand_path("../test/data", __FILE__)
+  else
+    File.expand_path("../data", __FILE__)
+  end
 end
 
 ######### routes #########
@@ -46,11 +55,12 @@ end
 
 get '/:file' do
   file_name = params[:file]
-  file_found = File.exist?("./data/#{file_name}")
+  file_path = File.join(data_path, file_name)
+  file_found = File.exist?(file_path)
   headers["Content-Type"] = "text/plain;charset=utf-8"
 
   if file_found
-    get_file_content(file_name)
+    get_file_content(file_path)
   else
     session[:message] = "#{file_name} does not exist."
     redirect '/'
@@ -59,14 +69,17 @@ end
 
 get '/:file/edit' do
   @file_name = params[:file]
-  @file_content =  @file = File.read("./data/#{@file_name}")
+  file_path = File.join(data_path, @file_name)
+  @file_content = File.read(file_path)
   erb :file_edit, layout: :layout
 end
 
 post '/:file/edit' do
   @file_name = params[:file]
+  file_path = File.join(data_path, @file_name)
   @file_content = params[:edit_box]
-  File.open(("./data/#{@file_name}"), 'w') do |f|
+
+  File.open(file_path, 'w') do |f|
      f.write @file_content
   end
 
