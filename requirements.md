@@ -70,3 +70,18 @@ content should appear within a textarea:
 When a user edits the document's content and clicks a “Save Changes”
 button, they are redirected to the index page and are shown a
 message: '$FILENAME has been updated.'.
+
+### Requirement 8
+
+Right now the application is using the same data during both development
+and testing. This means that as we modify the data as we continue
+development, there is a chance we break some of the tests we've already
+written.
+
+We currently have two active environments: development and test. Since 
+our data is stored entirely on the filesystem, though, we can use two 
+different directories to hold the data for our two environments.
+
+Make it so the test set up their own files (in a test/data directory)
+and remove them (incuding the test/data directory) after they are done.
+

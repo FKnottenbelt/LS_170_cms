@@ -1,12 +1,23 @@
 require_relative './capybara_helper'
+require_relative './filetest_helper'
 
 class CmsAcceptTest < CapybaraTestCase
+
+  def setup
+    FileUtils.mkdir_p(data_path)
+  end
+
+  def teardown
+    FileUtils.rm_rf(data_path)
+  end
 
   def test_acc_test_have_run
     puts "Acc tests running"
   end
 
   def test_clicking_file_opens_file
+    create_document "about.txt", "Ruby was influenced by Perl"
+
     # If I am at the home page
     visit '/'
     # and I click on a file
@@ -18,6 +29,10 @@ class CmsAcceptTest < CapybaraTestCase
   end
 
   def test_editing_a_file
+    create_document "requirement6.md", "<em>Gemfile</em>"
+    create_document "test.txt"
+    create_document "changes.txt"
+
     # If I am at the home page
     visit '/'
     # I should see a link for test.txt
@@ -48,8 +63,5 @@ class CmsAcceptTest < CapybaraTestCase
     page.all('a')[save_counter].click
     # I should see my edited text
     assert_content 'Edited by acc-test'
-    # (reset text)
-    fill_in 'edit_box', with: 'this is a test file'
-    click_button 'Save changes'
   end
 end
