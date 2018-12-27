@@ -78,10 +78,21 @@ and testing. This means that as we modify the data as we continue
 development, there is a chance we break some of the tests we've already
 written.
 
-We currently have two active environments: development and test. Since 
-our data is stored entirely on the filesystem, though, we can use two 
+We currently have two active environments: development and test. Since
+our data is stored entirely on the filesystem, though, we can use two
 different directories to hold the data for our two environments.
 
 Make it so the test set up their own files (in a test/data directory)
 and remove them (incuding the test/data directory) after they are done.
 
+### Requirement 9
+
+When a message is displayed to a user, that message should appear
+against a yellow background. (yellow bar)
+
+Messages should disappear if the page they appear on is reloaded.
+
+Text files should continue to be displayed by the browser as plain text.
+
+The entire site (including markdown files, but not text files) should
+be displayed in a sans-serif typeface.
