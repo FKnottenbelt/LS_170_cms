@@ -1,5 +1,4 @@
 require_relative './capybara_helper'
-require_relative './filetest_helper'
 
 class CmsAcceptTest < CapybaraTestCase
 

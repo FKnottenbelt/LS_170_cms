@@ -96,3 +96,25 @@ Text files should continue to be displayed by the browser as plain text.
 
 The entire site (including markdown files, but not text files) should
 be displayed in a sans-serif typeface.
+
+### Requirement 10
+
+Add a favicon.ico
+
+### Requirement 11
+
+When a user views the index page, they should see a link that says
+"New Document".
+
+When a user clicks the "New Document" link, they should be taken
+to a page with a text input labeled "Add a new document:" and a
+submit button labeled "Create"
+
+When a user enters a document name and clicks "Create", they should
+be redirected to the index page. The name they entered in the form
+should now appear in the file list. They should see a message that
+says "$FILENAME was created.", where $FILENAME is the name of the
+document just created.
+
+If a user attempts to create a new document without a name, the form
+should be re-displayed and a message should say "A name is required."

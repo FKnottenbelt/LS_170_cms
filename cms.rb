@@ -5,6 +5,7 @@ require 'bundler/setup'
 require 'sinatra/content_for'
 require 'pry' if development?
 require 'redcarpet'
+require "fileutils"
 
 ########## setup ######
 configure do
@@ -48,6 +49,11 @@ def data_path # get absolute path
   end
 end
 
+def create_document(name, content = "")
+  File.open(File.join(data_path, name), "w") do |file|
+    file.write(content)
+  end
+end
 ######### routes #########
 get '/' do
   erb :files, layout: :layout
@@ -65,6 +71,16 @@ get '/:file' do
     session[:message] = "#{file_name} does not exist."
     redirect '/'
   end
+end
+
+get '/files/new' do
+  erb :file_new, layout: :layout
+end
+
+post '/files' do
+  create_document(params[:document_name])
+  session[:message] = "#{params[:document_name]} was created."
+  redirect '/'
 end
 
 get '/:file/edit' do
