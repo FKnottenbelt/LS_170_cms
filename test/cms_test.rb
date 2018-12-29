@@ -126,5 +126,8 @@ class CmsTest < RackTestCase
 
     get last_response["Location"]
     assert_includes last_response.body, "test.txt was deleted"
+
+    get "/"
+    refute_includes last_response.body, "test.txt"
   end
 end
