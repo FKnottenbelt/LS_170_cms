@@ -78,8 +78,9 @@ get '/files/new' do
 end
 
 post '/files' do
-  if params[:document_name].strip.empty?
+  if params[:document_name].to_s.empty?
     session[:message] = "A name is required."
+    status 422 # Unprocessable Entity
     erb :file_new, layout: :layout
   else
     create_document(params[:document_name])
