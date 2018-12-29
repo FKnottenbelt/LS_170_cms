@@ -63,4 +63,39 @@ class CmsAcceptTest < CapybaraTestCase
     # I should see my edited text
     assert_content 'Edited by acc-test'
   end
+
+  def test_create_new_document
+    # when I view the homepage
+    visit '/'
+    # and I see and click the new document link
+    assert_link 'New Document'
+    click_link 'New Document'
+    # I go to the add new doc page
+    assert_current_path '/files/new'
+    # I see a label "Add a new document"
+    assert_content "Add a new document"
+    # if I enter a new document 'test.txt'
+    fill_in 'document_name', with: 'test.txt'
+    # and I click the create button
+    click_button 'Create'
+    # I should be redirected to the index page
+    assert_current_path '/'
+    # where I see my new file in the list
+    assert_content 'test.txt'
+    # and get a succes message
+    assert_content 'test.txt was created.'
+  end
+
+  def test_create_empty_doc_fails
+    # I go to the add new doc page
+    visit '/files/new'
+    # if I don't enter a new document
+    fill_in 'document_name', with: ''
+    # and I click the create button
+    click_button 'Create'
+    # I should be returned to the files new page
+    assert_current_path '/files'
+    # where I see an error message
+    assert_content 'A name is required.'
+  end
 end
