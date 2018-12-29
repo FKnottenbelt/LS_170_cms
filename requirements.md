@@ -118,3 +118,11 @@ document just created.
 
 If a user attempts to create a new document without a name, the form
 should be re-displayed and a message should say "A name is required."
+
+### Requirement 12
+
+When a user views the index page, they should see a "delete" button 
+next to each document.
+
+When a user clicks a "delete" button, the application should delete
+the appropriate document and display a message: "$FILENAME was deleted".

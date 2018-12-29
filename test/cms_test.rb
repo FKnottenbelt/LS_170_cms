@@ -117,4 +117,14 @@ class CmsTest < RackTestCase
     name = '   '
     assert_equal(false, valid_doc_name?(name))
   end
+
+  def test_delete_document
+    create_document 'test.txt'
+
+    post '/test.txt/delete', document_name: "test.txt"
+    assert_equal 302, last_response.status
+
+    get last_response["Location"]
+    assert_includes last_response.body, "test.txt was deleted"
+  end
 end

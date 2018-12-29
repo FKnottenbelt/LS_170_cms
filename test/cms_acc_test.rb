@@ -98,4 +98,17 @@ class CmsAcceptTest < CapybaraTestCase
     # where I see an error message
     assert_content 'A name is required.'
   end
+
+  def test_delete_document
+    create_document("acctest.txt")
+
+    # when I view the homepage
+    visit '/'
+    # and I see and click the delete button
+    click_button 'Delete'
+    # I wil still be on the home page
+    assert_current_path '/'
+    # but my file is gone
+    refute_content "acctest.txt</a>"
+  end
 end
