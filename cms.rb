@@ -54,6 +54,10 @@ def create_document(name, content = "")
     file.write(content)
   end
 end
+
+def valid_doc_name?(document_name)
+  !(document_name.to_s.empty? || document_name.strip == '')
+end
 ######### routes #########
 get '/' do
   erb :files, layout: :layout
@@ -78,14 +82,14 @@ get '/files/new' do
 end
 
 post '/files' do
-  if params[:document_name].to_s.empty?
-    session[:message] = "A name is required."
-    status 422 # Unprocessable Entity
-    erb :file_new, layout: :layout
-  else
+  if valid_doc_name?(params[:document_name])
     create_document(params[:document_name])
     session[:message] = "#{params[:document_name]} was created."
     redirect '/'
+  else
+    session[:message] = "A name is required."
+    status 422 # Unprocessable Entity
+    erb :file_new, layout: :layout
   end
 end
 

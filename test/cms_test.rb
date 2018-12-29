@@ -105,4 +105,16 @@ class CmsTest < RackTestCase
     assert_equal 422, last_response.status
     assert_includes last_response.body, "A name is required"
   end
+
+  def test_valid_document_name
+    name = 'test.txt'
+    assert_equal(true, valid_doc_name?(name))
+  end
+
+  def test_invalid_document_name
+    name = ''
+    assert_equal(false, valid_doc_name?(name))
+    name = '   '
+    assert_equal(false, valid_doc_name?(name))
+  end
 end
