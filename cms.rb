@@ -78,9 +78,14 @@ get '/files/new' do
 end
 
 post '/files' do
-  create_document(params[:document_name])
-  session[:message] = "#{params[:document_name]} was created."
-  redirect '/'
+  if params[:document_name].strip.empty?
+    session[:message] = "A name is required."
+    erb :file_new, layout: :layout
+  else
+    create_document(params[:document_name])
+    session[:message] = "#{params[:document_name]} was created."
+    redirect '/'
+  end
 end
 
 get '/:file/edit' do
