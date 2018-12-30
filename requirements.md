@@ -126,3 +126,33 @@ next to each document.
 
 When a user clicks a "delete" button, the application should delete
 the appropriate document and display a message: "$FILENAME was deleted".
+
+### Requirement 13
+
+When a signed-out user views the index page of the site, they should
+see a "Sign In" button.
+
+When a user clicks the "Sign In" button, they should be taken to a
+new page with a sign in form. The form should contain a text input
+labeled "Username" and a password input labeled "Password". The form
+should also contain a submit button labeled "Sign In".
+
+When a user enters the username "admin" and password "secret" into
+the sign in form and clicks the "Sign In" button, they should be
+signed in and redirected to the index page. A message should display
+that says "Welcome!"
+
+When a user enters any other username and password into the sign in
+form and clicks the "Sign In" button, the sign in form should be
+redisplayed and an error message "Invalid Credentials" should be shown.
+The username they entered into the form should appear in the username
+input.
+
+When a signed-in user views the index page, they should see a message
+at the bottom of the page that says "Signed in as $USERNAME.",
+followed by a button labeled "Sign Out".
+
+When a signed-in user clicks this "Sign Out" button, they should be
+signed out of the application and redirected to the index page of
+the site. They should see a message that says "You have been signed
+out.".
