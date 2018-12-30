@@ -68,6 +68,12 @@ label {
   text-transform: uppercase;
 }
 
+.top-bar .sign-in {
+  float: right;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
 /* Navigation */
 ul {
   padding: 0;
@@ -128,7 +134,7 @@ th, td {
 
 
 /* button */
-button {
+.delete{
   border-radius: 20px;
   padding: 5px;
 }

@@ -1,4 +1,10 @@
 <div class='top-bar'>
+  <% if @signed_in == false %>
+    <form >
+      <button type='submit' class='sign-in'>Sign In</button>
+    </form>
+  <% end %>
+
   <h2 class='bar-title'>File based CMS with Sinatra</h2>
   <a href='/files/new'>New Document</a>
 </div>

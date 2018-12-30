@@ -17,6 +17,8 @@ end
 before do
   path_pattern = File.join(data_path, "*")
   @files ||= Dir.glob(path_pattern).map { |file| File.basename(file) }.sort
+
+  session[:signed_in] = false
 end
 
 ######### view helpers #########
@@ -60,6 +62,7 @@ def valid_doc_name?(document_name)
 end
 ######### routes #########
 get '/' do
+  @signed_in = session[:signed_in]
   erb :files, layout: :layout
 end
 
