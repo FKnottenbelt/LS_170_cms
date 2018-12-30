@@ -18,7 +18,7 @@ before do
   path_pattern = File.join(data_path, "*")
   @files ||= Dir.glob(path_pattern).map { |file| File.basename(file) }.sort
 
-  session[:signed_in] = false
+  session[:signed_in] ||= false
 end
 
 ######### view helpers #########
@@ -68,6 +68,18 @@ end
 
 get '/sign_in' do
   erb :sign_in, layout: :layout
+end
+
+post '/sign_in/' do
+  if params[:username] == 'admin' && params[:password] == 'secret'
+
+    session[:signed_in] = true
+    session[:message] = 'Welcome!'
+    redirect '/'
+  else
+    session[:message] = 'Invalid Credentials'
+    erb :sign_in, layout: :layout
+  end
 end
 
 get '/:file' do
