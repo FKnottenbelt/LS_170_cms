@@ -1,13 +1,29 @@
-<ul>
-  <% @files.each do |file| %>
-    <li>
-      <form action='/<%= file %>/delete' method='post'>
-        <a id='file' href='/<%= file %>'><%= file %></a>
-        <a id='edit' class='edit' href='/<%= file %>/edit'>Edit</a>
-        <button type='submit' class='delete'>Delete</button>
-      </form>
-    </li>
-  <% end %>
-</ul>
+<div class='top-bar'>
+  <h2 class='bar-title'>File based CMS with Sinatra</h2>
+  <a href='/files/new'>New Document</a>
+</div>
 
-<a href='/files/new'>New Document</a>
+
+<table>
+  <thead>
+    <tr>
+      <th>File</th>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @files.each do |file| %>
+    <tr>
+      <th><a id='file' href='/<%= file %>'><%= file %></a></th>
+      <td><a id='edit' class='edit' href='/<%= file %>/edit'>Edit</a></td>
+      <td><form action='/<%= file %>/delete' method='post'>
+            <button type='submit' class='delete'>Delete</button>
+          </form></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+
