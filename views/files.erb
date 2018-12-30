@@ -1,6 +1,6 @@
 <div class='top-bar'>
   <% if @signed_in == false %>
-    <form >
+    <form action='/sign_in' method='get'>
       <button type='submit' class='sign-in'>Sign In</button>
     </form>
   <% end %>

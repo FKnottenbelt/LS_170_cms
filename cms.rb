@@ -66,6 +66,10 @@ get '/' do
   erb :files, layout: :layout
 end
 
+get '/sign_in' do
+  erb :sign_in, layout: :layout
+end
+
 get '/:file' do
   file_name = params[:file]
   file_path = File.join(data_path, file_name)
@@ -122,3 +126,4 @@ post '/:file/delete' do
   session[:message] = "#{params[:file]} was deleted"
   redirect '/'
 end
+
