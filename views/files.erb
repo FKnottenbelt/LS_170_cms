@@ -7,14 +7,26 @@
   <h2 class='bar-title'>File based CMS with Sinatra</h2>
 </div>
 
-<div class='top2-bar'>
-  <a href='/files/new'>New Document</a>
-  <% if @signed_in %>
-    <p class='sign-in-name'>Signed in as <%= @username %>.
-       <button class='sign-out'>Sign Out</button>
-    </p>
-  <% end %>
+<div class='container'>
+  <div class='container-left'>
+    <a href='/files/new'>New Document</a>
+  </div>
+
+  <div class='container-middle'>
+    <% if @signed_in %>
+      <p class='sign-in-name'>Signed in as <%= @username %>.</p>
+    <% end %>
+  </div>
+
+  <div class='container-right'>
+    <% if @signed_in %>
+      <form action='/sign-out' method='post'>
+        <button class='sign-out'>Sign Out</button>
+      </form>
+    <% end %>
+  </div>
 </div>
+
 
 <table>
   <thead>

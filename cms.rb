@@ -85,6 +85,14 @@ post '/sign_in/' do
   end
 end
 
+post '/sign-out' do
+  session[:signed_in] = false
+  session.delete :username
+  session.delete :password
+  session[:message] = "You have been signed out."
+  redirect '/'
+end
+
 get '/:file' do
   file_name = params[:file]
   file_path = File.join(data_path, file_name)

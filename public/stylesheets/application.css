@@ -67,7 +67,10 @@ label {
   padding: 5px 10px;
 }
 
-.top2-bar {
+/* second top bar */
+
+.container {
+  display: flex;
   box-sizing: border-box;
   background-color: #3587A4;
   overflow: auto;
@@ -78,7 +81,11 @@ label {
   z-index: 999;
 }
 
-.top2-bar a {
+.container-left {
+  width: 70%;
+}
+
+.container-left a {
   color: #FFF;
   float: left;
   font-family: 'Oxygen', sans-serif;
@@ -89,7 +96,11 @@ label {
   text-transform: uppercase;
 }
 
-.top2-bar .sign-in-name {
+.container-middle {
+  width: 25%;
+}
+
+.container-middle .sign-in-name {
   color: #FFF;
   float: right;
   font-family: 'Oxygen', sans-serif;
@@ -98,6 +109,10 @@ label {
   letter-spacing: 2px;
   margin: 0;
   padding-right: 20px;
+}
+
+.container-right {
+  width: 5%;
 }
 
 /* Navigation */
