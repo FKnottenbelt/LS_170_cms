@@ -111,4 +111,47 @@ class CmsAcceptTest < CapybaraTestCase
     # but my file is gone
     refute_content "acctest.txt</a>"
   end
+
+  def test_user_can_sign_in_as_admin
+    # when I view the homepage
+    visit '/'
+    # and I click the sign in button
+    click_button 'Sign In'
+    # I go to the sign in page
+    assert_current_path '/sign_in'
+    # I fill in the fields as user admin
+    fill_in 'username', with: 'admin'
+    fill_in 'password', with: 'secret'
+    # and I click the sign in button
+    click_button 'Sign In'
+    # I get redirected to the home page
+    assert_current_path '/'
+    # where I get a succes message
+    assert_content 'Welcome!'
+    # see my user name
+    assert_content 'Signed in as admin.'
+    # and a sign out button
+    assert_button 'Sign Out'
+    # reset
+    click_button 'Sign Out'
+    visit '/'
+  end
+
+  def test_user_can_not_sign_in_if_not_admin
+    # when I view the homepage
+    visit '/'
+    # and I click the sign in button
+    click_button 'Sign In'
+    # I go to the sign in page
+    assert_current_path '/sign_in'
+    # I fill in the fields as non admin
+    fill_in 'username', with: ''
+    fill_in 'password', with: ''
+    # and I click the sign in button
+    click_button 'Sign In'
+    # I will still be on the sign in page
+    assert_current_path '/sign_in'
+    # and see a failure message
+    assert_content 'Invalid Credentials'
+  end
 end

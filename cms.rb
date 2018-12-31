@@ -72,7 +72,7 @@ get '/sign_in' do
   erb :sign_in, layout: :layout
 end
 
-post '/sign_in/' do
+post '/sign_in' do
   if params[:username] == 'admin' && params[:password] == 'secret'
 
     session[:signed_in] = true
