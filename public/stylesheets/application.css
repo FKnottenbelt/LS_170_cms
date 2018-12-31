@@ -5,6 +5,11 @@ body {
   font-family: sans-serif;
 }
 
+button {
+  border-radius: 20px;
+  padding: 5px;
+}
+
 /* Textarea (edit document) */
 
 label, textarea {
@@ -51,7 +56,6 @@ label {
   font-weight: 300;
   letter-spacing: 2px;
   margin: 0;
-  /*padding: 20px 18px 10px 18px;*/
   text-transform: uppercase;
   width: 90%;
   text-align: center;
@@ -76,13 +80,24 @@ label {
 
 .top2-bar a {
   color: #FFF;
-  display: inline-block;
+  float: left;
   font-family: 'Oxygen', sans-serif;
   font-size: 12px;
   font-weight: 300;
   letter-spacing: 2px;
   margin: 0;
   text-transform: uppercase;
+}
+
+.top2-bar .sign-in-name {
+  color: #FFF;
+  float: right;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  margin: 0;
+  padding-right: 20px;
 }
 
 /* Navigation */
@@ -141,10 +156,4 @@ th, td {
   padding: 20px;
   text-align: left;
   width: 33.3333%;
-}
-
-/* button */
-.delete{
-  border-radius: 20px;
-  padding: 5px;
 }

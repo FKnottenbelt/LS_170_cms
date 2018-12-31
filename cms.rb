@@ -60,9 +60,11 @@ end
 def valid_doc_name?(document_name)
   !(document_name.to_s.empty? || document_name.strip == '')
 end
+
 ######### routes #########
 get '/' do
   @signed_in = session[:signed_in]
+  @username = session[:username] if @signed_in
   erb :files, layout: :layout
 end
 
@@ -74,6 +76,7 @@ post '/sign_in/' do
   if params[:username] == 'admin' && params[:password] == 'secret'
 
     session[:signed_in] = true
+    @username = session[:username] = params[:username]
     session[:message] = 'Welcome!'
     redirect '/'
   else

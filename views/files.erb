@@ -8,7 +8,12 @@
 </div>
 
 <div class='top2-bar'>
-    <a href='/files/new'>New Document</a>
+  <a href='/files/new'>New Document</a>
+  <% if @signed_in %>
+    <p class='sign-in-name'>Signed in as <%= @username %>.
+       <button class='sign-out'>Sign Out</button>
+    </p>
+  <% end %>
 </div>
 
 <table>
