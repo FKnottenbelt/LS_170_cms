@@ -154,4 +154,19 @@ class CmsAcceptTest < CapybaraTestCase
     # and see a failure message
     assert_content 'Invalid Credentials'
   end
+
+  def test_user_can_sign_out
+    # if I am signed in
+    visit '/sign_in'
+    fill_in 'username', with: 'admin'
+    fill_in 'password', with: 'secret'
+    click_button 'Sign In'
+    assert_current_path '/'
+    # I see a sign out button
+    assert_button 'Sign Out'
+    # which I can click
+    click_button 'Sign Out'
+    # and I see a succes message
+    assert_content 'You have been signed out.'
+  end
 end
