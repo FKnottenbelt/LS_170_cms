@@ -80,12 +80,13 @@ post '/sign_in' do
     session[:message] = 'Welcome!'
     redirect '/'
   else
+    status 422
     session[:message] = 'Invalid Credentials'
     erb :sign_in, layout: :layout
   end
 end
 
-post '/sign-out' do
+post '/sign_out' do
   session[:signed_in] = false
   session.delete :username
   session.delete :password
