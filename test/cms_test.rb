@@ -131,6 +131,14 @@ class CmsTest < RackTestCase
     refute_includes last_response.body, "test.txt"
   end
 
+  def test_sign_in_form_exists
+    get '/sign_in'
+
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "Username"
+    assert_includes last_response.body, %q(type='submit')
+  end
+
   def test_user_can_sign_in
     post '/sign_in', username: 'admin', password: 'secret'
     assert_equal 302, last_response.status
@@ -163,5 +171,6 @@ class CmsTest < RackTestCase
 
     get "/"
     refute_includes last_response.body, "You have been signed out."
+    assert_includes last_response.body, "Sign In"
   end
 end
