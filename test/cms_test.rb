@@ -14,6 +14,10 @@ class CmsTest < RackTestCase
     puts "Rake tests running"
   end
 
+  def session
+    last_request.env["rack.session"]
+  end
+
   def test_home_page
     create_document "about.txt"
     create_document "changes.txt"
@@ -40,12 +44,7 @@ class CmsTest < RackTestCase
     get "/nonexisting.txt"
     assert_equal 302, last_response.status
 
-    get last_response["Location"]  # follow redirect
-    assert_equal 200, last_response.status
-    assert_includes last_response.body, "nonexisting.txt does not exist"
-
-    get "/"
-    refute_includes(last_response.body, "nonexisting.txt does not exist")
+    assert_equal "nonexisting.txt does not exist.", session[:message]
   end
 
   def test_markdown_file_renders_as_html
@@ -71,10 +70,7 @@ class CmsTest < RackTestCase
 
     post "/test.txt/edit", edit_box: "Did it!"
     assert_equal 302, last_response.status
-
-    get last_response["Location"]
-    assert_includes last_response.body, "test.txt has been updated"
-    assert_equal 200, last_response.status
+    assert_equal "test.txt has been updated.", session[:message]
 
     get "/test.txt"
     assert_equal 200, last_response.status
@@ -93,8 +89,7 @@ class CmsTest < RackTestCase
     post "/files", document_name: "test.txt"
     assert_equal 302, last_response.status
 
-    get last_response["Location"]
-    assert_includes last_response.body, "test.txt was created"
+    assert_equal "test.txt was created.", session[:message]
 
     get "/"
     assert_includes last_response.body, "test.txt"
@@ -124,11 +119,10 @@ class CmsTest < RackTestCase
     post '/test.txt/delete', document_name: "test.txt"
     assert_equal 302, last_response.status
 
-    get last_response["Location"]
-    assert_includes last_response.body, "test.txt was deleted"
+    assert_equal "test.txt was deleted", session[:message]
 
     get "/"
-    refute_includes last_response.body, "test.txt"
+    refute_includes last_response.body, "/test.txt"
   end
 
   def test_sign_in_form_exists
@@ -143,34 +137,35 @@ class CmsTest < RackTestCase
     post '/users/sign_in', username: 'admin', password: 'secret'
     assert_equal 302, last_response.status
 
-    get last_response["Location"]
-    assert_includes last_response.body, 'Welcome!'
-    assert_includes last_response.body, 'Signed in as admin.'
+    assert_equal 'Welcome!', session[:message]
+    assert_equal "admin", session[:username]
 
-    get "/"
-    refute_includes last_response.body, "Welcome!"
+    get last_response["Location"]
+    assert_includes last_response.body, 'Signed in as admin.'
   end
 
   def test_invalid_user_sign_in_fails
     post '/users/sign_in', username: '', password: ''
     assert_equal 422, last_response.status
-
-    assert_includes last_response.body, 'Invalid Credentials'
-
-    get "/users/sign_in"
-    refute_includes last_response.body, "Invalid Credentials"
+    assert_nil session[:username]
+    puts session[:message]
+    assert_includes last_response.body, "Invalid Credentials"
   end
 
   def test_user_can_sign_out
-    post '/users/sign_in', username: 'admin', password: 'secret'
+    get "/", {}, {"rack.session" => { username: "admin",
+                                      signed_in: true
+                                     }
+                 }
+    assert_includes last_response.body, "Signed in as admin"
+
     post '/users/sign_out'
     assert_equal 302, last_response.status
 
-    get last_response["Location"]
-    assert_includes last_response.body, 'You have been signed out.'
+    assert_equal 'You have been signed out.', session[:message]
 
-    get "/"
-    refute_includes last_response.body, "You have been signed out."
+    get last_response["Location"]
+    assert_nil session[:username]
     assert_includes last_response.body, "Sign In"
   end
 end

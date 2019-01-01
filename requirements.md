@@ -156,3 +156,13 @@ When a signed-in user clicks this "Sign Out" button, they should be
 signed out of the application and redirected to the index page of
 the site. They should see a message that says "You have been signed
 out.".
+
+### Requirement 14
+
+Update all existing tests to use the MockRequest object for verifying
+session values. This means that many tests will become shorter as
+assertions can be made directly about the session instead of the
+content of a response's body. Specifically, instead of loading a
+page using get and then checking to see if a given message is
+displayed on it, session[:message] can be used to access the session
+value directly.
