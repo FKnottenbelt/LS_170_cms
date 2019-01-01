@@ -68,11 +68,11 @@ get '/' do
   erb :files, layout: :layout
 end
 
-get '/sign_in' do
+get '/users/sign_in' do
   erb :sign_in, layout: :layout
 end
 
-post '/sign_in' do
+post '/users/sign_in' do
   if params[:username] == 'admin' && params[:password] == 'secret'
 
     session[:signed_in] = true
@@ -86,7 +86,7 @@ post '/sign_in' do
   end
 end
 
-post '/sign_out' do
+post '/users/sign_out' do
   session[:signed_in] = false
   session.delete :username
   session.delete :password

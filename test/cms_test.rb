@@ -132,7 +132,7 @@ class CmsTest < RackTestCase
   end
 
   def test_sign_in_form_exists
-    get '/sign_in'
+    get '/users/sign_in'
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, "Username"
@@ -140,7 +140,7 @@ class CmsTest < RackTestCase
   end
 
   def test_user_can_sign_in
-    post '/sign_in', username: 'admin', password: 'secret'
+    post '/users/sign_in', username: 'admin', password: 'secret'
     assert_equal 302, last_response.status
 
     get last_response["Location"]
@@ -152,18 +152,18 @@ class CmsTest < RackTestCase
   end
 
   def test_invalid_user_sign_in_fails
-    post '/sign_in', username: '', password: ''
+    post '/users/sign_in', username: '', password: ''
     assert_equal 422, last_response.status
 
     assert_includes last_response.body, 'Invalid Credentials'
 
-    get "/sign_in"
+    get "/users/sign_in"
     refute_includes last_response.body, "Invalid Credentials"
   end
 
   def test_user_can_sign_out
-    post '/sign_in', username: 'admin', password: 'secret'
-    post '/sign_out'
+    post '/users/sign_in', username: 'admin', password: 'secret'
+    post '/users/sign_out'
     assert_equal 302, last_response.status
 
     get last_response["Location"]

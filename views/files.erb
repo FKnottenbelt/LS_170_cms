@@ -1,6 +1,6 @@
 <div class='top-bar'>
   <% if @signed_in == false %>
-    <form action='/sign_in' method='get'>
+    <form action='/users/sign_in' method='get'>
       <button type='submit' class='sign-in'>Sign In</button>
     </form>
   <% end %>
@@ -20,7 +20,7 @@
 
   <div class='container-right'>
     <% if @signed_in %>
-      <form action='/sign_out' method='post'>
+      <form action='/users/sign_out' method='post'>
         <button class='sign-out'>Sign Out</button>
       </form>
     <% end %>

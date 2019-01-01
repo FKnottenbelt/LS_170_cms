@@ -118,7 +118,7 @@ class CmsAcceptTest < CapybaraTestCase
     # and I click the sign in button
     click_button 'Sign In'
     # I go to the sign in page
-    assert_current_path '/sign_in'
+    assert_current_path '/users/sign_in'
     # I fill in the fields as user admin
     fill_in 'username', with: 'admin'
     fill_in 'password', with: 'secret'
@@ -143,21 +143,21 @@ class CmsAcceptTest < CapybaraTestCase
     # and I click the sign in button
     click_button 'Sign In'
     # I go to the sign in page
-    assert_current_path '/sign_in'
+    assert_current_path '/users/sign_in'
     # I fill in the fields as non admin
     fill_in 'username', with: ''
     fill_in 'password', with: ''
     # and I click the sign in button
     click_button 'Sign In'
     # I will still be on the sign in page
-    assert_current_path '/sign_in'
+    assert_current_path '/users/sign_in'
     # and see a failure message
     assert_content 'Invalid Credentials'
   end
 
   def test_user_can_sign_out
     # if I am signed in
-    visit '/sign_in'
+    visit '/users/sign_in'
     fill_in 'username', with: 'admin'
     fill_in 'password', with: 'secret'
     click_button 'Sign In'
