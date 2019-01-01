@@ -89,7 +89,6 @@ end
 post '/users/sign_out' do
   session[:signed_in] = false
   session.delete :username
-  session.delete :password
   session[:message] = "You have been signed out."
   redirect '/'
 end
