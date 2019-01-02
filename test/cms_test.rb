@@ -45,7 +45,7 @@ class CmsTest < RackTestCase
   end
 
   def test_file_page_gives_error_when_file_does_not_exist
-    get "/nonexisting.txt"
+    get "/nonexisting.txt", {}, admin_session
     assert_equal 302, last_response.status
 
     assert_equal "nonexisting.txt does not exist.", session[:message]
@@ -63,7 +63,7 @@ class CmsTest < RackTestCase
   def test_edit_text
     create_document "test.txt"
 
-    get "/test.txt/edit"
+    get "/test.txt/edit", {}, admin_session
     assert_equal 200, last_response.status
     assert_includes last_response.body, "Edit content of test.txt"
     assert_includes last_response.body, "Documents can be edited now"
@@ -72,7 +72,7 @@ class CmsTest < RackTestCase
   def test_update_text
     create_document "test.txt"
 
-    post "/test.txt/edit", edit_box: "Did it!"
+    post "/test.txt/edit", {edit_box: "Did it!"}, admin_session
     assert_equal 302, last_response.status
     assert_equal "test.txt has been updated.", session[:message]
 
@@ -82,7 +82,7 @@ class CmsTest < RackTestCase
   end
 
   def test_view_new_document_form
-    get "/files/new"
+    get "/files/new", {}, admin_session
 
     assert_equal 200, last_response.status
     assert_includes last_response.body, "<input"
@@ -90,7 +90,7 @@ class CmsTest < RackTestCase
   end
 
   def test_create_new_document
-    post "/files", document_name: "test.txt"
+    post "/files", { document_name: "test.txt" }, admin_session
     assert_equal 302, last_response.status
 
     assert_equal "test.txt was created.", session[:message]
@@ -100,7 +100,7 @@ class CmsTest < RackTestCase
   end
 
   def test_create_new_document_without_filename
-    post "/files", document_name: ""
+    post "/files", { document_name: "" }, admin_session
     assert_equal 422, last_response.status
     assert_includes last_response.body, "A name is required"
   end
@@ -120,7 +120,7 @@ class CmsTest < RackTestCase
   def test_delete_document
     create_document 'test.txt'
 
-    post '/test.txt/delete', document_name: "test.txt"
+    post '/test.txt/delete', { document_name: "test.txt" }, admin_session
     assert_equal 302, last_response.status
 
     assert_equal "test.txt was deleted", session[:message]
@@ -171,22 +171,36 @@ class CmsTest < RackTestCase
   end
 
   def test_not_signedin_user_can_not_visit_edit_doc_page
-    #
+    create_document 'test.txt'
+    get '/test.txt/edit'
+    assert_equal "You must be signed in to do that.", session[:message]
+    assert_equal 302, last_response.status
   end
 
   def test_not_signedin_user_can_not_edit_doc
-    #
+    create_document 'test.txt'
+    post '/test.txt/edit'
+    assert_equal "You must be signed in to do that.", session[:message]
+    assert_equal 302, last_response.status
   end
 
   def test_not_signedin_user_can_not_visit_new_doc_page
-    #
+    get '/files/new'
+    assert_equal "You must be signed in to do that.", session[:message]
+    assert_equal 302, last_response.status
   end
 
-  def test_not_signedin_user_can_make_new_doc
-    #
+  def test_not_signedin_user_can_not_make_new_doc
+    post '/files'
+    assert_equal "You must be signed in to do that.", session[:message]
+    assert_equal 302, last_response.status
   end
 
-  def test_not_signedin_user_can_delete_doc
-    #
+  def test_not_signedin_user_can_not_delete_doc
+    create_document 'test.txt'
+
+    post '/test.txt/delete'
+    assert_equal "You must be signed in to do that.", session[:message]
+    assert_equal 302, last_response.status
   end
 end

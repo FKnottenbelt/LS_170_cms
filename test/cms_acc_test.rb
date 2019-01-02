@@ -4,14 +4,29 @@ class CmsAcceptTest < CapybaraTestCase
 
   def setup
     FileUtils.mkdir_p(data_path)
+    admin_session
   end
 
   def teardown
     FileUtils.rm_rf(data_path)
+    log_out
   end
 
   def test_acc_test_have_run
     puts "Acc tests running"
+  end
+
+  def admin_session
+    visit '/'
+    click_button 'Sign In'
+    fill_in 'username', with: 'admin'
+    fill_in 'password', with: 'secret'
+    click_button 'Sign In'
+  end
+
+  def log_out
+    visit '/'
+    click_button "Sign Out"
   end
 
   def test_clicking_file_opens_file
@@ -113,7 +128,8 @@ class CmsAcceptTest < CapybaraTestCase
   end
 
   def test_user_can_sign_in_as_admin
-    # when I view the homepage
+    # when I view the homepage and am not logged in
+    log_out
     visit '/'
     # and I click the sign in button
     click_button 'Sign In'
@@ -132,13 +148,11 @@ class CmsAcceptTest < CapybaraTestCase
     assert_content 'Signed in as admin.'
     # and a sign out button
     assert_button 'Sign Out'
-    # reset
-    click_button 'Sign Out'
-    visit '/'
   end
 
   def test_user_can_not_sign_in_if_not_admin
-    # when I view the homepage
+    # when I view the homepage and am not logged in
+    log_out
     visit '/'
     # and I click the sign in button
     click_button 'Sign In'
@@ -153,9 +167,13 @@ class CmsAcceptTest < CapybaraTestCase
     assert_current_path '/users/sign_in'
     # and see a failure message
     assert_content 'Invalid Credentials'
+    # reset
+    admin_session
   end
 
   def test_user_can_sign_out
+    log_out
+
     # if I am signed in
     visit '/users/sign_in'
     fill_in 'username', with: 'admin'
@@ -168,5 +186,7 @@ class CmsAcceptTest < CapybaraTestCase
     click_button 'Sign Out'
     # and I see a succes message
     assert_content 'You have been signed out.'
+    # reset
+    admin_session
   end
 end

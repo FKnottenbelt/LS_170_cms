@@ -61,6 +61,12 @@ def valid_doc_name?(document_name)
   !(document_name.to_s.empty? || document_name.strip == '')
 end
 
+def block_not_signed_in_users
+  if session[:signed_in] == false
+    session[:message] = "You must be signed in to do that."
+    redirect '/'
+  end
+end
 ######### routes #########
 get '/' do
   @signed_in = session[:signed_in]
@@ -108,10 +114,13 @@ get '/:file' do
 end
 
 get '/files/new' do
+  block_not_signed_in_users
   erb :file_new, layout: :layout
 end
 
 post '/files' do
+  block_not_signed_in_users
+
   if valid_doc_name?(params[:document_name])
     create_document(params[:document_name])
     session[:message] = "#{params[:document_name]} was created."
@@ -124,6 +133,7 @@ post '/files' do
 end
 
 get '/:file/edit' do
+  block_not_signed_in_users
   @file_name = params[:file]
   file_path = File.join(data_path, @file_name)
   @file_content = File.read(file_path)
@@ -131,6 +141,8 @@ get '/:file/edit' do
 end
 
 post '/:file/edit' do
+  block_not_signed_in_users
+
   @file_name = params[:file]
   file_path = File.join(data_path, @file_name)
   @file_content = params[:edit_box]
@@ -144,6 +156,8 @@ post '/:file/edit' do
 end
 
 post '/:file/delete' do
+  block_not_signed_in_users
+
   file_path = File.join(data_path, params[:file])
   File.delete(file_path)
   session[:message] = "#{params[:file]} was deleted"
