@@ -18,6 +18,10 @@ class CmsTest < RackTestCase
     last_request.env["rack.session"]
   end
 
+  def admin_session
+    {"rack.session" => { username: "admin", signed_in: true}}
+  end
+
   def test_home_page
     create_document "about.txt"
     create_document "changes.txt"
@@ -153,10 +157,7 @@ class CmsTest < RackTestCase
   end
 
   def test_user_can_sign_out
-    get "/", {}, {"rack.session" => { username: "admin",
-                                      signed_in: true
-                                     }
-                 }
+    get "/", {}, admin_session
     assert_includes last_response.body, "Signed in as admin"
 
     post '/users/sign_out'
@@ -167,5 +168,25 @@ class CmsTest < RackTestCase
     get last_response["Location"]
     assert_nil session[:username]
     assert_includes last_response.body, "Sign In"
+  end
+
+  def test_not_signedin_user_can_not_visit_edit_doc_page
+    #
+  end
+
+  def test_not_signedin_user_can_not_edit_doc
+    #
+  end
+
+  def test_not_signedin_user_can_not_visit_new_doc_page
+    #
+  end
+
+  def test_not_signedin_user_can_make_new_doc
+    #
+  end
+
+  def test_not_signedin_user_can_delete_doc
+    #
   end
 end

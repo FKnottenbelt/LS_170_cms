@@ -166,3 +166,15 @@ content of a response's body. Specifically, instead of loading a
 page using get and then checking to see if a given message is
 displayed on it, session[:message] can be used to access the session
 value directly.
+
+### Requirement 15
+
+When a signed-out user attempts to perform the following actions,
+they should be redirected back to the index and shown a message
+that says "You must be signed in to do that.":
+
+    Visit the edit page for a document
+    Submit changes to a document
+    Visit the new document page
+    Submit the new document form
+    Delete a document
