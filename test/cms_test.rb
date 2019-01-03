@@ -207,6 +207,9 @@ class CmsTest < RackTestCase
   def test_valid_user_gives_true_if_valid_user
     result = valid_user?('admin', 'secret')
     assert_equal(true, result)
+  end
+
+  def test_valid_user_gives_false_if_invalid_user
     result = valid_user?('anon', 'not saying')
     assert_equal(false, result)
   end
