@@ -18,15 +18,19 @@ class CmsAcceptTest < CapybaraTestCase
 
   def admin_session
     visit '/'
-    click_button 'Sign In'
-    fill_in 'username', with: 'admin'
-    fill_in 'password', with: 'secret'
-    click_button 'Sign In'
+    if (page.has_button?('Sign In'))
+      click_button 'Sign In'
+      fill_in 'username', with: 'admin'
+      fill_in 'password', with: 'secret'
+      click_button 'Sign In'
+    end
   end
 
   def log_out
     visit '/'
-    click_button "Sign Out"
+    if (page.has_button?('Sign Out'))
+      click_button "Sign Out"
+    end
   end
 
   def test_clicking_file_opens_file
@@ -167,26 +171,16 @@ class CmsAcceptTest < CapybaraTestCase
     assert_current_path '/users/sign_in'
     # and see a failure message
     assert_content 'Invalid Credentials'
-    # reset
-    admin_session
   end
 
   def test_user_can_sign_out
-    log_out
-
-    # if I am signed in
-    visit '/users/sign_in'
-    fill_in 'username', with: 'admin'
-    fill_in 'password', with: 'secret'
-    click_button 'Sign In'
-    assert_current_path '/'
+    # if I am signed in (in setup)
+    visit '/'
     # I see a sign out button
     assert_button 'Sign Out'
     # which I can click
     click_button 'Sign Out'
     # and I see a succes message
     assert_content 'You have been signed out.'
-    # reset
-    admin_session
   end
 end
