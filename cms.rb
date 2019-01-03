@@ -21,15 +21,6 @@ before do
   session[:signed_in] ||= false
 end
 
-######### view helpers #########
-module Helpers
-
-end
-
-helpers do
-  include Helpers
-end
-
 ######### helper methods #########
 def render_markdown(file)
   headers["Content-Type"] = "text/html;charset=utf-8"
@@ -67,6 +58,7 @@ def block_not_signed_in_users
     redirect '/'
   end
 end
+
 ######### routes #########
 get '/' do
   @signed_in = session[:signed_in]
@@ -147,9 +139,7 @@ post '/:file/edit' do
   file_path = File.join(data_path, @file_name)
   @file_content = params[:edit_box]
 
-  File.open(file_path, 'w') do |f|
-     f.write @file_content
-  end
+  File.write(file_path, @file_content)
 
   session[:message] = "#{@file_name} has been updated."
   redirect '/'
