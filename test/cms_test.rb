@@ -152,8 +152,8 @@ class CmsTest < RackTestCase
     post '/users/sign_in', username: '', password: ''
     assert_equal 422, last_response.status
     assert_nil session[:username]
-    puts session[:message]
-    assert_includes last_response.body, "Invalid Credentials"
+   # assert_equal "Invalid Credentials", session[:message]
+    assert_includes last_response.body, 'Invalid Credentials'
   end
 
   def test_user_can_sign_out
@@ -202,5 +202,12 @@ class CmsTest < RackTestCase
     post '/test.txt/delete'
     assert_equal "You must be signed in to do that.", session[:message]
     assert_equal 302, last_response.status
+  end
+
+  def test_valid_user_gives_true_if_valid_user
+    result = valid_user?('admin', 'secret')
+    assert_equal(true, result)
+    result = valid_user?('anon', 'not saying')
+    assert_equal(false, result)
   end
 end

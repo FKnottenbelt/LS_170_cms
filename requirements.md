@@ -178,3 +178,9 @@ that says "You must be signed in to do that.":
     Visit the new document page
     Submit the new document form
     Delete a document
+
+### Requirement 16
+
+An administrator should be able to modify the list of users who may
+sign into the application by editing a configuration file using
+their text editor.

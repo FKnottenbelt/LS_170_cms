@@ -1,11 +1,12 @@
 require 'sinatra'
-require "sinatra/reloader" if development?
+require "sinatra/reloader" if !production?
 require "tilt/erubis"
 require 'bundler/setup'
 require 'sinatra/content_for'
-require 'pry' if development?
+require 'pry' if !production?
 require 'redcarpet'
 require "fileutils"
+require 'yaml'
 
 ########## setup ######
 configure do
@@ -59,6 +60,19 @@ def block_not_signed_in_users
   end
 end
 
+def load_user_credentials
+  credentials_path = if ENV["RACK_ENV"] == "test"
+    File.expand_path("../test/users.yml", __FILE__)
+  else
+    File.expand_path("../users.yml", __FILE__)
+  end
+  YAML.load_file(credentials_path)
+end
+
+def valid_user?(username, password)
+  user_credentials = load_user_credentials
+  user_credentials[username] == password
+end
 ######### routes #########
 get '/' do
   @signed_in = session[:signed_in]
@@ -71,8 +85,7 @@ get '/users/sign_in' do
 end
 
 post '/users/sign_in' do
-  if params[:username] == 'admin' && params[:password] == 'secret'
-
+  if valid_user?(params[:username], params[:password])
     session[:signed_in] = true
     @username = session[:username] = params[:username]
     session[:message] = 'Welcome!'
