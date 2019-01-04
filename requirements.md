@@ -121,7 +121,7 @@ should be re-displayed and a message should say "A name is required."
 
 ### Requirement 12
 
-When a user views the index page, they should see a "delete" button 
+When a user views the index page, they should see a "delete" button
 next to each document.
 
 When a user clicks a "delete" button, the application should delete
@@ -184,3 +184,8 @@ that says "You must be signed in to do that.":
 An administrator should be able to modify the list of users who may
 sign into the application by editing a configuration file using
 their text editor.
+
+### Requirement 17
+
+User passwords must be hashed using bcrypt before being stored
+so that raw passwords are not being stored anywhere.

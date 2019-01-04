@@ -7,6 +7,7 @@ require 'pry' if !production?
 require 'redcarpet'
 require "fileutils"
 require 'yaml'
+require 'bcrypt'
 
 ########## setup ######
 configure do
@@ -69,10 +70,18 @@ def load_user_credentials
   YAML.load_file(credentials_path)
 end
 
-def valid_user?(username, password)
+def valid_user?(username, password_attempt)
   user_credentials = load_user_credentials
-  user_credentials[username] == password
+  stored_password = user_credentials[username]
+
+  if user_credentials.has_key?(username)
+    bcrypt_password = BCrypt::Password.new(stored_password)
+    bcrypt_password == password_attempt
+  else
+    false
+  end
 end
+
 ######### routes #########
 get '/' do
   @signed_in = session[:signed_in]

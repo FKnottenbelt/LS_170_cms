@@ -4,6 +4,7 @@ gem 'sinatra', '~>2.0.4'
 gem 'sinatra-contrib'
 gem 'erubis'
 gem 'redcarpet'
+gem 'bcrypt'
 
 ruby '2.4.1'
 
