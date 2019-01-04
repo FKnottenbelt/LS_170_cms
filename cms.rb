@@ -50,6 +50,12 @@ def create_document(name, content = "")
   end
 end
 
+def same_document_content?(doc1, doc2)
+  doc1_content = get_file_content(File.join(data_path, doc1))
+  doc2_content = get_file_content(File.join(data_path, doc2))
+  doc1_content == doc2_content
+end
+
 def valid_doc_name?(document_name)
   !(document_name.to_s.empty? || document_name.strip == '')
 end
@@ -113,6 +119,7 @@ post '/users/sign_out' do
   redirect '/'
 end
 
+# View document
 get '/:file' do
   file_name = params[:file]
   file_path = File.join(data_path, file_name)
@@ -127,11 +134,13 @@ get '/:file' do
   end
 end
 
+# Go to new document page
 get '/files/new' do
   block_not_signed_in_users
   erb :file_new, layout: :layout
 end
 
+# Make a new document
 post '/files' do
   block_not_signed_in_users
 
@@ -146,14 +155,39 @@ post '/files' do
   end
 end
 
+# Go to duplicate document page
+get '/:file/duplicate' do
+  block_not_signed_in_users
+
+  @file_name = params[:file]
+  erb :file_duplicate
+end
+
+# Duplicate a document
+post '/:file/duplicate' do
+  block_not_signed_in_users
+
+  @file_name = params[:file]
+  @new_file_name = params[:document_name]
+  file_path = File.join(data_path, @file_name)
+  @file_content = File.read(file_path)
+
+  create_document(@new_file_name, @file_content)
+  session[:message] = "#{@new_file_name} was created."
+  redirect '/'
+end
+
+# Go to edit document page
 get '/:file/edit' do
   block_not_signed_in_users
+
   @file_name = params[:file]
   file_path = File.join(data_path, @file_name)
   @file_content = File.read(file_path)
   erb :file_edit, layout: :layout
 end
 
+# Edit a document
 post '/:file/edit' do
   block_not_signed_in_users
 
@@ -167,6 +201,7 @@ post '/:file/edit' do
   redirect '/'
 end
 
+# Delete document
 post '/:file/delete' do
   block_not_signed_in_users
 

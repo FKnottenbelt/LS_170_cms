@@ -34,6 +34,7 @@
       <th>File</th>
       <th>Edit</th>
       <th>Delete</th>
+      <th>Duplicate</th>
     </tr>
   </thead>
   <tbody>
@@ -43,6 +44,9 @@
       <td><a id='edit' class='edit' href='/<%= file %>/edit'>Edit</a></td>
       <td><form action='/<%= file %>/delete' method='post'>
             <button type='submit' class='delete'>Delete</button>
+          </form></td>
+      <td><form action='/<%= file %>/duplicate' method='get'>
+            <button type='submit' class='duplicate'>Duplicate</button>
           </form></td>
     </tr>
     <% end %>

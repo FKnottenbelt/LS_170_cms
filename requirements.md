@@ -189,3 +189,9 @@ their text editor.
 
 User passwords must be hashed using bcrypt before being stored
 so that raw passwords are not being stored anywhere.
+
+### Requirement 18
+
+Add a "duplicate" button that creates a new document based on an
+old one.
+
