@@ -183,4 +183,28 @@ class CmsAcceptTest < CapybaraTestCase
     # and I see a succes message
     assert_content 'You have been signed out.'
   end
+
+  def test_user_can_duplicate_doc
+    create_document("acctest.txt")
+    # when I view the homepage
+    visit '/'
+    # and I see and click the duplicate document button
+    assert_button 'Duplicate'
+    click_button 'Duplicate'
+    # I go to the duplciate doc page
+    assert_current_path '/acctest.txt/duplicate'
+    # I see a label "Add a new document"
+    assert_content "Add a new document name"
+    assert_content "Duplicating file acctest.txt"
+    # if I enter a new document 'Newacctest.txt'
+    fill_in 'document_name', with: 'Newacctest.txt'
+    # and I click the create button
+    click_button 'Create'
+    # I should be redirected to the index page
+    assert_current_path '/'
+    # where I see my new file in the list
+    assert_content 'Newacctest.txt'
+    # and get a succes message
+    assert_content 'Newacctest.txt was created.'
+  end
 end

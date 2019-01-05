@@ -180,34 +180,23 @@ class CmsTest < RackTestCase
     assert_equal(true, same_document_content?('doc1', 'doc2'))
   end
 
-  # def test_create_new_document_without_filename
-  #   post "/files", { document_name: "" }, admin_session
-  #   assert_equal 422, last_response.status
-  #   assert_includes last_response.body, "A name is required"
-  # end
+  def test_dupliate_new_document_without_filename
+    create_document 'test.txt'
+    post "/test.txt/duplicate", { document_name: "" }, admin_session
+    assert_equal 422, last_response.status
+    assert_includes last_response.body, "A name is required"
+  end
 
-  # def test_valid_document_name
-  #   name = 'test.txt'
-  #   assert_equal(true, valid_doc_name?(name))
-  # end
+  def test_not_signedin_user_can_not_visit_duplicate_doc_page
+    get '/test.txt/duplicate'
+    assert_equal "You must be signed in to do that.", session[:message]
+    assert_equal 302, last_response.status
+  end
 
-  # def test_invalid_document_name
-  #   name = ''
-  #   assert_equal(false, valid_doc_name?(name))
-  #   name = '   '
-  #   assert_equal(false, valid_doc_name?(name))
-  # end
-
-  # def test_not_signedin_user_can_not_visit_new_doc_page
-  #   get '/files/new'
-  #   assert_equal "You must be signed in to do that.", session[:message]
-  #   assert_equal 302, last_response.status
-  # end
-
-  # def test_not_signedin_user_can_not_make_new_doc
-  #   post '/files'
-  #   assert_equal "You must be signed in to do that.", session[:message]
-  #   assert_equal 302, last_response.status
+  def test_not_signedin_user_can_not_duplicate_doc
+    post '/test.txt/duplicate'
+    assert_equal "You must be signed in to do that.", session[:message]
+    assert_equal 302, last_response.status
   end
 
   ############ Delete a document

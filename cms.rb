@@ -169,12 +169,20 @@ post '/:file/duplicate' do
 
   @file_name = params[:file]
   @new_file_name = params[:document_name]
-  file_path = File.join(data_path, @file_name)
-  @file_content = File.read(file_path)
 
-  create_document(@new_file_name, @file_content)
-  session[:message] = "#{@new_file_name} was created."
-  redirect '/'
+  if valid_doc_name?(@new_file_name)
+
+    file_path = File.join(data_path, @file_name)
+    @file_content = File.read(file_path)
+
+    create_document(@new_file_name, @file_content)
+    session[:message] = "#{@new_file_name} was created."
+    redirect '/'
+  else
+    session[:message] = "A name is required."
+    status 422
+    erb :file_duplicate
+  end
 end
 
 # Go to edit document page
