@@ -50,12 +50,6 @@ def create_document(name, content = "")
   end
 end
 
-def same_document_content?(doc1, doc2)
-  doc1_content = get_file_content(File.join(data_path, doc1))
-  doc2_content = get_file_content(File.join(data_path, doc2))
-  doc1_content == doc2_content
-end
-
 def valid_doc_name?(document_name)
   !(document_name.to_s.empty? || document_name.strip == '')
 end
@@ -88,6 +82,22 @@ def valid_user?(username, password_attempt)
   end
 end
 
+######### test helpers #########
+def same_document_content?(doc1, doc2)
+  doc1_content = get_file_content(File.join(data_path, doc1))
+  doc2_content = get_file_content(File.join(data_path, doc2))
+  doc1_content == doc2_content
+end
+
+def delete_user(username)
+  user_credentials = load_user_credentials
+  user_credentials.delete(username)
+end
+
+def user_exists?(username)
+  user_credentials = load_user_credentials
+  user_credentials.has_key?(username)
+end
 ######### routes #########
 get '/' do
   @signed_in = session[:signed_in]
@@ -96,7 +106,7 @@ get '/' do
 end
 
 get '/users/sign_in' do
-  erb :sign_in, layout: :layout
+  erb :users_sign_in, layout: :layout
 end
 
 post '/users/sign_in' do
@@ -108,7 +118,7 @@ post '/users/sign_in' do
   else
     status 422
     session[:message] = 'Invalid Credentials'
-    erb :sign_in, layout: :layout
+    erb :users_sign_in, layout: :layout
   end
 end
 

@@ -195,3 +195,6 @@ so that raw passwords are not being stored anywhere.
 Add a "duplicate" button that creates a new document based on an
 old one.
 
+### Requirement 19
+
+Extend this project with a user signup form.

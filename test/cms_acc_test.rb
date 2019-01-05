@@ -207,4 +207,31 @@ class CmsAcceptTest < CapybaraTestCase
     # and get a succes message
     assert_content 'Newacctest.txt was created.'
   end
+
+  def test_can_create_new_user
+    # If I am not signed in
+    log_out
+    # and I go to the sign in page
+    visit '/users/sign_in'
+    # I see a button to create a new account
+    assert_button "Create Account"
+    # If I click the new account button
+    click_button "Create Account"
+    # I see the sign up page
+    assert_current_path '/users/sign_in'
+    assert_content 'Creating new user account'
+    # where I can fill in de info for a new user account
+    fill_in 'username', with: 'Testuser1'
+    fill_in 'password', with: 'secret1'
+    # and click the save button
+    click_button "Sign Up"
+    # I will then be redirected to the home page
+    assert_current_path '/'
+    # where I get a succes message
+    assert_content 'Welcome!'
+    # see my user name
+    assert_content 'Signed in as Testuser1.'
+    # reset
+    delete_user('Testuser1')
+  end
 end

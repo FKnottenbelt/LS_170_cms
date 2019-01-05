@@ -273,4 +273,18 @@ class CmsTest < RackTestCase
     result = valid_user?('anon', 'not saying')
     assert_equal(false, result)
   end
+
+  ############ Users
+
+  def test_user_exists
+    assert_equal(true, user_exists?('admin'))
+  end
+
+  def test_user_does_not_exist
+    assert_equal(false, user_exists?('xqwzrc'))
+  end
+
+  def test_delete_user_name
+    assert_equal(false, 'not written yet')
+  end
 end
