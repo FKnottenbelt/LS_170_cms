@@ -218,7 +218,7 @@ class CmsAcceptTest < CapybaraTestCase
     # If I click the new account button
     click_button "Create Account"
     # I see the sign up page
-    assert_current_path '/users/sign_in'
+    assert_current_path '/users/new'
     assert_content 'Creating new user account'
     # where I can fill in de info for a new user account
     fill_in 'username', with: 'Testuser1'

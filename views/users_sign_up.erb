@@ -1,17 +1,13 @@
 <div class='center-form'>
 
-  <form action='/users/new' method='get'>
-    <button class='sign-up' type='submit'>Create Account</button>
-  </form>
-
-  <form action='/users/sign_in' method='post'>
+  <form action='/users/new' method='post'>
     <label for='username'>Username</label>
     <input name='username' value="<%= params[:username] %>">
 
     <label for='password'>Password</label>
     <input type='password' name='password' value=''>
 
-    <button type='submit'>Sign In</button>
+    <button type='submit'>Sign Up</button>
 
   </form>
 </div>

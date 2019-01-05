@@ -70,7 +70,7 @@ def load_user_credentials
   YAML.load_file(credentials_path)
 end
 
-def valid_user?(username, password_attempt)
+def valid_user_credentials?(username, password_attempt)
   user_credentials = load_user_credentials
   stored_password = user_credentials[username]
 
@@ -82,6 +82,9 @@ def valid_user?(username, password_attempt)
   end
 end
 
+def valid_user_name?(username)
+  !(username.to_s.empty? || username.strip == '')
+end
 ######### test helpers #########
 def same_document_content?(doc1, doc2)
   doc1_content = get_file_content(File.join(data_path, doc1))
@@ -105,12 +108,38 @@ get '/' do
   erb :files, layout: :layout
 end
 
+# Go to create new user page
+get '/users/new' do
+  session[:message] = 'Creating new user account'
+  erb :users_sign_up
+end
+
+# Create new user
+post '/users/new' do
+  if user_exists?(params[:username])
+    status 422
+    session[:message] = 'This username allready exists,
+    please choose another username'
+    erb :users_sign_up
+  elsif valid_user_name?(params[:username])
+  #  add_user(params[:username], params[:password])
+
+    session[:signed_in] = true
+    @username = session[:username] = params[:username]
+    session[:message] = 'Welcome!'
+    redirect '/'
+  end
+end
+
+
+# Go to user sign in page
 get '/users/sign_in' do
   erb :users_sign_in, layout: :layout
 end
 
+# Sign in user
 post '/users/sign_in' do
-  if valid_user?(params[:username], params[:password])
+  if valid_user_credentials?(params[:username], params[:password])
     session[:signed_in] = true
     @username = session[:username] = params[:username]
     session[:message] = 'Welcome!'
@@ -122,6 +151,7 @@ post '/users/sign_in' do
   end
 end
 
+# Sign out user
 post '/users/sign_out' do
   session[:signed_in] = false
   session.delete :username

@@ -265,12 +265,12 @@ class CmsTest < RackTestCase
   end
 
   def test_valid_user_gives_true_if_valid_user
-    result = valid_user?('admin', 'secret')
+    result = valid_user_credentials?('admin', 'secret')
     assert_equal(true, result)
   end
 
   def test_valid_user_gives_false_if_invalid_user
-    result = valid_user?('anon', 'not saying')
+    result = valid_user_credentials?('anon', 'not saying')
     assert_equal(false, result)
   end
 
@@ -287,4 +287,15 @@ class CmsTest < RackTestCase
   def test_delete_user_name
     assert_equal(false, 'not written yet')
   end
+
+  def test_user_name_is_not_empty
+    assert_equal(false, valid_user_name?('  '))
+    assert_equal(false, valid_user_name?(''))
+  end
+
+  def test_user_filled_in_user_name_is_valid
+    assert_equal(true, valid_user_name?('Johnny'))
+    assert_equal(true, valid_user_name?('Carla May'))
+  end
+
 end

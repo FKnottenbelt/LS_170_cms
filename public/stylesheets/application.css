@@ -185,3 +185,10 @@ th, td {
   justify-content: center;
   align-items: center;
 }
+
+/* sign-up button */
+
+.sign-up {
+  margin-top: 5%;
+  position: absolute
+}
