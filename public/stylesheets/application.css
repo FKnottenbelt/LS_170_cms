@@ -172,3 +172,16 @@ th, td {
   text-align: left;
   width: 25%;
 }
+
+
+/* form in center */
+
+.center-form {
+  height: 50vh;
+  width: 50vw;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

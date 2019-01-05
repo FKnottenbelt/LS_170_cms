@@ -1,6 +1,8 @@
-<p>Duplicating file <%= @file_name %></p>
-<form action="/<%= @file_name %>/duplicate" method='post'>
-  <label for='document_name'>Add a new document name</label>
-  <input name='document_name' value="<%= @file_name %>">
-  <button type='submit' name="create">Create</button>
-</form>
+<div class='center-form'>
+  <form action="/<%= @file_name %>/duplicate" method='post'>
+    <label for='document_name'>Duplicating file <%= @file_name %>.
+                               Add a new document name:</label>
+    <input name='document_name' value="<%= @file_name %>">
+    <button type='submit' name="create">Create</button>
+  </form>
+</div>
