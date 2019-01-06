@@ -298,4 +298,8 @@ class CmsTest < RackTestCase
     assert_equal(true, valid_user_name?('Carla May'))
   end
 
+  def test_add_user
+    add_user('Tim', 'bazoka')
+    assert_equal(true, user_exists?('Tim'))
+  end
 end

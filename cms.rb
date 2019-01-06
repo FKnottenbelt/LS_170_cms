@@ -61,13 +61,21 @@ def block_not_signed_in_users
   end
 end
 
-def load_user_credentials
-  credentials_path = if ENV["RACK_ENV"] == "test"
+def user_credentials_path
+  if ENV["RACK_ENV"] == "test"
     File.expand_path("../test/users.yml", __FILE__)
   else
     File.expand_path("../users.yml", __FILE__)
   end
+end
+
+def load_user_credentials
+  credentials_path = user_credentials_path
   YAML.load_file(credentials_path)
+end
+
+def valid_user_name?(username)
+  !(username.to_s.empty? || username.strip == '')
 end
 
 def valid_user_credentials?(username, password_attempt)
@@ -82,9 +90,13 @@ def valid_user_credentials?(username, password_attempt)
   end
 end
 
-def valid_user_name?(username)
-  !(username.to_s.empty? || username.strip == '')
+def add_user(username, password)
+  bcrypt_password = BCrypt::Password.create(password).to_s
+  new_user = "\n#{username}: #{bcrypt_password}"
+
+  File.write(user_credentials_path, new_user, mode: 'a')
 end
+
 ######### test helpers #########
 def same_document_content?(doc1, doc2)
   doc1_content = get_file_content(File.join(data_path, doc1))
@@ -122,7 +134,7 @@ post '/users/new' do
     please choose another username'
     erb :users_sign_up
   elsif valid_user_name?(params[:username])
-  #  add_user(params[:username], params[:password])
+    add_user(params[:username], params[:password])
 
     session[:signed_in] = true
     @username = session[:username] = params[:username]
