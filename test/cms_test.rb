@@ -28,6 +28,7 @@ class CmsTest < RackTestCase
     create_document "history.txt"
 
     get "/"
+
     assert_equal 200, last_response.status
     assert_equal "text/html;charset=utf-8", last_response["Content-Type"]
     assert_includes(last_response.body, "about.txt")
@@ -41,6 +42,7 @@ class CmsTest < RackTestCase
     create_document "about.txt", "Ruby was influenced by Perl"
 
     get "/about.txt"
+
     assert_equal 200, last_response.status
     assert_equal "text/plain;charset=utf-8", last_response["Content-Type"]
     assert_includes(last_response.body, "Ruby was influenced by Perl")
@@ -48,8 +50,8 @@ class CmsTest < RackTestCase
 
   def test_file_page_gives_error_when_file_does_not_exist
     get "/nonexisting.txt", {}, admin_session
-    assert_equal 302, last_response.status
 
+    assert_equal 302, last_response.status
     assert_equal "nonexisting.txt does not exist.", session[:message]
   end
 
@@ -57,6 +59,7 @@ class CmsTest < RackTestCase
     create_document "requirement6.md", "<em>Gemfile</em>"
 
     get "/requirement6.md"
+
     assert_equal 200, last_response.status
     assert_equal "text/html;charset=utf-8", last_response["Content-Type"]
     assert_includes last_response.body, "<em>Gemfile</em>"
@@ -68,6 +71,7 @@ class CmsTest < RackTestCase
     create_document "test.txt"
 
     get "/test.txt/edit", {}, admin_session
+
     assert_equal 200, last_response.status
     assert_includes last_response.body, "Edit content of test.txt"
     assert_includes last_response.body, "Documents can be edited now"
@@ -77,24 +81,30 @@ class CmsTest < RackTestCase
     create_document "test.txt"
 
     post "/test.txt/edit", {edit_box: "Did it!"}, admin_session
+
     assert_equal 302, last_response.status
     assert_equal "test.txt has been updated.", session[:message]
 
     get "/test.txt"
+
     assert_equal 200, last_response.status
     assert_includes last_response.body, "Did it!"
   end
 
   def test_not_signedin_user_can_not_visit_edit_doc_page
     create_document 'test.txt'
+
     get '/test.txt/edit'
+
     assert_equal "You must be signed in to do that.", session[:message]
     assert_equal 302, last_response.status
   end
 
   def test_not_signedin_user_can_not_edit_doc
     create_document 'test.txt'
+
     post '/test.txt/edit'
+
     assert_equal "You must be signed in to do that.", session[:message]
     assert_equal 302, last_response.status
   end
@@ -111,16 +121,18 @@ class CmsTest < RackTestCase
 
   def test_create_new_document
     post "/files", { document_name: "test.txt" }, admin_session
-    assert_equal 302, last_response.status
 
+    assert_equal 302, last_response.status
     assert_equal "test.txt was created.", session[:message]
 
     get "/"
+
     assert_includes last_response.body, "test.txt"
   end
 
   def test_create_new_document_without_filename
     post "/files", { document_name: "" }, admin_session
+
     assert_equal 422, last_response.status
     assert_includes last_response.body, "A name is required"
   end
@@ -139,12 +151,14 @@ class CmsTest < RackTestCase
 
   def test_not_signedin_user_can_not_visit_new_doc_page
     get '/files/new'
+
     assert_equal "You must be signed in to do that.", session[:message]
     assert_equal 302, last_response.status
   end
 
   def test_not_signedin_user_can_not_make_new_doc
     post '/files'
+
     assert_equal "You must be signed in to do that.", session[:message]
     assert_equal 302, last_response.status
   end
@@ -153,6 +167,7 @@ class CmsTest < RackTestCase
 
   def test_view_duplicate_document_form
     create_document 'test.txt'
+
     get "/test.txt/duplicate", {}, admin_session
 
     assert_equal 200, last_response.status
@@ -162,13 +177,15 @@ class CmsTest < RackTestCase
 
   def test_duplicate_a_document
     create_document 'test.txt'
+
     post "/test.txt/duplicate", { document_name: "NEWtest.txt" },
                                 admin_session
-    assert_equal 302, last_response.status
 
+    assert_equal 302, last_response.status
     assert_equal "NEWtest.txt was created.", session[:message]
 
     get "/"
+
     assert_includes last_response.body, "/NEWtest.txt"
     assert_equal(true, same_document_content?('test.txt', 'NEWtest.txt'))
   end
@@ -182,19 +199,23 @@ class CmsTest < RackTestCase
 
   def test_dupliate_new_document_without_filename
     create_document 'test.txt'
+
     post "/test.txt/duplicate", { document_name: "" }, admin_session
+
     assert_equal 422, last_response.status
     assert_includes last_response.body, "A name is required"
   end
 
   def test_not_signedin_user_can_not_visit_duplicate_doc_page
     get '/test.txt/duplicate'
+
     assert_equal "You must be signed in to do that.", session[:message]
     assert_equal 302, last_response.status
   end
 
   def test_not_signedin_user_can_not_duplicate_doc
     post '/test.txt/duplicate'
+
     assert_equal "You must be signed in to do that.", session[:message]
     assert_equal 302, last_response.status
   end
@@ -205,8 +226,8 @@ class CmsTest < RackTestCase
     create_document 'test.txt'
 
     post '/test.txt/delete', { document_name: "test.txt" }, admin_session
-    assert_equal 302, last_response.status
 
+    assert_equal 302, last_response.status
     assert_equal "test.txt was deleted", session[:message]
 
     get "/"
@@ -217,6 +238,7 @@ class CmsTest < RackTestCase
     create_document 'test.txt'
 
     post '/test.txt/delete'
+
     assert_equal "You must be signed in to do that.", session[:message]
     assert_equal 302, last_response.status
   end
@@ -233,8 +255,8 @@ class CmsTest < RackTestCase
 
   def test_user_can_sign_in
     post '/users/sign_in', username: 'admin', password: 'secret'
-    assert_equal 302, last_response.status
 
+    assert_equal 302, last_response.status
     assert_equal 'Welcome!', session[:message]
     assert_equal "admin", session[:username]
 
@@ -244,6 +266,7 @@ class CmsTest < RackTestCase
 
   def test_invalid_user_sign_in_fails
     post '/users/sign_in', username: '', password: ''
+
     assert_equal 422, last_response.status
     assert_nil session[:username]
    # assert_equal "Invalid Credentials", session[:message]
@@ -252,14 +275,16 @@ class CmsTest < RackTestCase
 
   def test_user_can_sign_out
     get "/", {}, admin_session
+
     assert_includes last_response.body, "Signed in as admin"
 
     post '/users/sign_out'
-    assert_equal 302, last_response.status
 
+    assert_equal 302, last_response.status
     assert_equal 'You have been signed out.', session[:message]
 
     get last_response["Location"]
+
     assert_nil session[:username]
     assert_includes last_response.body, "Sign In"
   end
@@ -274,7 +299,7 @@ class CmsTest < RackTestCase
     assert_equal(false, result)
   end
 
-  ############ Users
+  ############ Users - helpers
 
   def test_user_exists
     assert_equal(true, user_exists?('admin'))
@@ -286,6 +311,7 @@ class CmsTest < RackTestCase
 
   def test_delete_user_name
     add_user("Carla", 'secret')
+
     delete_user('Carla')
     assert_equal(false, user_exists?('Carla'))
   end
@@ -303,6 +329,46 @@ class CmsTest < RackTestCase
   def test_add_user
     add_user('Tim', 'bazoka')
     assert_equal(true, user_exists?('Tim'))
+
     delete_user('Tim')
+  end
+
+  ############ Users
+
+  def test_sign_up_page
+    get '/users/new'
+
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, 'Creating new user account'
+  end
+
+  def test_create_valid_new_user
+    post '/users/new', username: 'Testuser2', password: 'secret'
+
+    assert_equal 302, last_response.status
+    assert_equal 'Welcome!', session[:message]
+
+    delete_user('Testuser2')
+  end
+
+  def test_create_new_user_with_not_valid_name_fails
+    post '/users/new', username: '', password: 'secret'
+
+    assert_equal 422, last_response.status
+    assert_nil session[:username]
+   # assert_equal 'Invalid Credentials', session[:message]
+    assert_includes last_response.body, 'Invalid Credentials'
+  end
+
+  def test_create_existing_user_fails
+    add_user('Testuser3','secret')
+
+    post '/users/new', username: 'Testuser3', password: 'secret'
+
+    assert_equal 422, last_response.status
+    assert_includes last_response.body, 'This username allready exists,
+    please choose another username'
+
+    delete_user('Testuser3')
   end
 end

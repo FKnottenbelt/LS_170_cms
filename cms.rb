@@ -141,9 +141,12 @@ post '/users/new' do
     @username = session[:username] = params[:username]
     session[:message] = 'Welcome!'
     redirect '/'
+  else
+    status 422
+    session[:message] = 'Invalid Credentials'
+    erb :users_sign_up
   end
 end
-
 
 # Go to user sign in page
 get '/users/sign_in' do
