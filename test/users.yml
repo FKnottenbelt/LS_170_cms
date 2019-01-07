@@ -1,5 +1,2 @@
 ---
-bill: $2a$10$3H3vKcAg70bJJjiiAxs.q.fhfQMfFovGY/kFgCl8nHwCheedCHU/K
-sonia: $2a$10$uefX7Ptab7ElG/XYhotNuufE53KV9eM1ac997rI4WFPVlJOOyV3gu
-admin: $2a$10$nMV6bKgSC3i08AxEDsYSq.thxWo1.XfCrBHE18QgRqUH2rvL8iNW6
-Tim: $2a$10$WmIvVQhFwr5DloP/TOGLlO5hu3cObeVZcMIcTOqam9ykat4C2WOOG
+admin: "$2a$10$nMV6bKgSC3i08AxEDsYSq.thxWo1.XfCrBHE18QgRqUH2rvL8iNW6"

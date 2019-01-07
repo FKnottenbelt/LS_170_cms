@@ -285,7 +285,9 @@ class CmsTest < RackTestCase
   end
 
   def test_delete_user_name
-    assert_equal(false, 'not written yet')
+    add_user("Carla", 'secret')
+    delete_user('Carla')
+    assert_equal(false, user_exists?('Carla'))
   end
 
   def test_user_name_is_not_empty
@@ -301,5 +303,6 @@ class CmsTest < RackTestCase
   def test_add_user
     add_user('Tim', 'bazoka')
     assert_equal(true, user_exists?('Tim'))
+    delete_user('Tim')
   end
 end
