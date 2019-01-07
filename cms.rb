@@ -30,10 +30,20 @@ def render_markdown(file)
   markdown.render(file)
 end
 
+def render_png(file)
+  headers["Content-Type"] = "image/png"
+  file
+end
+
 def get_file_content(file_path)
   @file = File.read(file_path)
-  return @file unless file_path =~ /.md/
-  render_markdown(@file)
+  if file_path =~ /.md/
+    render_markdown(@file)
+  elsif file_path =~ /.png/
+    render_png(@file)
+  else
+    @file
+  end
 end
 
 def data_path # get absolute path
@@ -48,6 +58,12 @@ def create_document(name, content = "")
   File.open(File.join(data_path, name), "w") do |file|
     file.write(content)
   end
+end
+
+def upload_file(url)
+  filename = File.basename(url)
+  destination = File.join(data_path, filename)
+  FileUtils.cp(url, destination)
 end
 
 def valid_doc_name?(document_name)
@@ -114,6 +130,7 @@ def user_exists?(username)
   user_credentials = load_user_credentials
   user_credentials.has_key?(username)
 end
+
 ######### routes #########
 get '/' do
   @signed_in = session[:signed_in]

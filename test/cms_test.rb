@@ -243,6 +243,15 @@ class CmsTest < RackTestCase
     assert_equal 302, last_response.status
   end
 
+  ############ Upload a document
+
+   def test_uploading_a_document
+     url = './public/images/icon_edit.png'
+     upload_file(url)
+     file = Dir.glob("/#{data_path}/icon_edit.png").first
+     assert_equal(true, !!file)
+   end
+
   ############ Sign in/out
 
   def test_sign_in_form_exists

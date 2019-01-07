@@ -198,3 +198,8 @@ old one.
 ### Requirement 19
 
 Extend this project with a user signup form.
+
+### Requirement 20
+
+Add the ability to upload images to the CMS (which could be
+referenced within markdown files).
