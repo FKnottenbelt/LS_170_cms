@@ -245,13 +245,54 @@ class CmsTest < RackTestCase
 
   ############ Upload a document
 
-   def test_uploading_a_document
+   def test_uploading_a_document_method
      url = './public/images/icon_edit.png'
      upload_file(url)
      file = Dir.glob("/#{data_path}/icon_edit.png").first
      assert_equal(true, !!file)
    end
 
+  def test_not_signedin_user_can_not_visit_upload_doc_page
+    get '/files/upload'
+
+    assert_equal "You must be signed in to do that.", session[:message]
+    assert_equal 302, last_response.status
+  end
+
+  def test_not_signedin_user_can_not_upload_doc
+    post '/files/upload'
+
+    assert_equal "You must be signed in to do that.", session[:message]
+    assert_equal 302, last_response.status
+  end
+
+  def test_view_upload_document_form
+    get "/files/upload", {}, admin_session
+
+    assert_equal 200, last_response.status
+    assert_includes last_response.body, "Upload"
+    assert_includes last_response.body, %q(<button type='submit')
+  end
+
+  def test_upload_a_document
+    post "/files/upload", { document_name: "./public/images/icon_edit.png" },
+                                admin_session
+
+    assert_equal 302, last_response.status
+    assert_equal "icon_edit.png has been uploaded", session[:message]
+
+    get "/"
+
+    assert_includes last_response.body, "/icon_edit.png"
+  end
+  # def test_dupliate_new_document_without_filename
+  #   create_document 'test.txt'
+
+  #   post "/test.txt/duplicate", { document_name: "" }, admin_session
+
+  #   assert_equal 422, last_response.status
+  #   assert_includes last_response.body, "A name is required"
+  # end
   ############ Sign in/out
 
   def test_sign_in_form_exists
