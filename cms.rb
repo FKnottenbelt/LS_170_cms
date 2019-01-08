@@ -70,6 +70,17 @@ def valid_doc_name?(document_name)
   !(document_name.to_s.empty? || document_name.strip == '')
 end
 
+def write_versioned_file(file)
+  timestamp = Time.now.strftime("%Y%m%d%H%M%S")
+
+  file_without_extention, extention = file.split('.')
+  extention = ".#{extention}" if extention
+
+  versioned_file = "#{file_without_extention}_#{timestamp}#{extention}"
+  File.rename(File.join(data_path,file),
+              File.join(data_path,versioned_file))
+end
+
 def block_not_signed_in_users
   if session[:signed_in] == false
     session[:message] = "You must be signed in to do that."
@@ -276,7 +287,8 @@ post '/:file/edit' do
   file_path = File.join(data_path, @file_name)
   @file_content = params[:edit_box]
 
-  File.write(file_path, @file_content)
+  write_versioned_file(@file_name)
+  File.write(file_path, @file_content, mode:'w')
 
   session[:message] = "#{@file_name} has been updated."
   redirect '/'

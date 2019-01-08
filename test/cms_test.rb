@@ -109,6 +109,21 @@ class CmsTest < RackTestCase
     assert_equal 302, last_response.status
   end
 
+  def test_edit_doc_also_produces_versioned_version
+    create_document "versiontest.txt"
+
+    post "/versiontest.txt/edit", {edit_box: "Did it!"}, admin_session
+
+    assert_equal 302, last_response.status
+    assert_equal "versiontest.txt has been updated.", session[:message]
+
+    get "/"
+
+    assert_equal 200, last_response.status
+    partial_timestamp = Time.now.strftime("%Y%m%d")
+    versioned_file = "/versiontest_#{partial_timestamp}"
+    assert_includes last_response.body, versioned_file
+  end
   ############ Make a new document
 
   def test_view_new_document_form

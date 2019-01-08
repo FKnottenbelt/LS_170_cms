@@ -180,7 +180,6 @@ that says "You must be signed in to do that.":
     Delete a document
 
 ### Requirement 16
-
 An administrator should be able to modify the list of users who may
 sign into the application by editing a configuration file using
 their text editor.
@@ -203,3 +202,8 @@ Extend this project with a user signup form.
 
 Add the ability to upload images to the CMS (which could be
 referenced within markdown files).
+
+### Requirement 21
+
+Modify the CMS so that each version of a document is preserved as
+changes are made to it.
