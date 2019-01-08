@@ -131,6 +131,27 @@ class CmsAcceptTest < CapybaraTestCase
     refute_content "acctest.txt</a>"
   end
 
+  def test_user_can_upload_file
+    # when I view the homepage
+    visit '/'
+    # I see a link to upload a file
+    assert_link 'Upload Document'
+    # if I click the link
+    click_link 'Upload Document'
+    # I go to the upload file page
+    assert_current_path '/files/upload'
+    # if I type in an url to a doc
+    fill_in 'document_name', with: "./public/images/icon_edit.png"
+    # And click upload, my doc will be uploaded
+    click_button 'Upload'
+    # and I will be redirected back to the homepage
+    assert_current_path '/'
+    # where I see my file
+    assert_content 'icon_edit.png'
+    # and  success message
+    assert_content "icon_edit.png has been uploaded"
+  end
+
   def test_user_can_sign_in_as_admin
     # when I view the homepage and am not logged in
     log_out

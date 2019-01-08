@@ -285,14 +285,14 @@ class CmsTest < RackTestCase
 
     assert_includes last_response.body, "/icon_edit.png"
   end
-  # def test_dupliate_new_document_without_filename
-  #   create_document 'test.txt'
 
-  #   post "/test.txt/duplicate", { document_name: "" }, admin_session
+  def test_uploading_document_without_filename_fails
+    post "/files/upload", { document_name: "" }, admin_session
 
-  #   assert_equal 422, last_response.status
-  #   assert_includes last_response.body, "A name is required"
-  # end
+    assert_equal 422, last_response.status
+    assert_includes last_response.body, "This is not a valid document name"
+  end
+
   ############ Sign in/out
 
   def test_sign_in_form_exists
