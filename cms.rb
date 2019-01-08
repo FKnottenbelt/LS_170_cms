@@ -292,3 +292,26 @@ post '/:file/delete' do
   redirect '/'
 end
 
+# Go to upload document page
+get '/files/upload' do
+  block_not_signed_in_users
+
+  erb :file_upload
+end
+
+# Upload file
+post '/files/upload' do
+  block_not_signed_in_users
+
+  url = params[:document_name]
+  if (valid_doc_name?(url))
+    upload_file(url)
+    filename = File.basename(url)
+    session[:message] = "#{filename} has been uploaded"
+    redirect '/'
+  else
+    status 422
+    session[:message] = "This is not a valid document name"
+    erb :file_upload
+  end
+end
