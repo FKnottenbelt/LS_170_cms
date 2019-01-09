@@ -207,3 +207,8 @@ referenced within markdown files).
 
 Modify the CMS so that each version of a document is preserved as
 changes are made to it.
+
+### Requirement 22
+
+Validate that document names contain an extension that the
+application supports.

@@ -290,8 +290,9 @@ class CmsTest < RackTestCase
   end
 
   def test_upload_a_document
-    post "/files/upload", { document_name: "./public/images/icon_edit.png" },
-                                admin_session
+    post "/files/upload",
+      { document_name: "./public/images/icon_edit.png" },
+      admin_session
 
     assert_equal 302, last_response.status
     assert_equal "icon_edit.png has been uploaded", session[:message]

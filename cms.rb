@@ -9,6 +9,8 @@ require "fileutils"
 require 'yaml'
 require 'bcrypt'
 
+SUPPORTED_EXTENTIONS = ['txt', 'md', 'png', 'jpg']
+
 ########## setup ######
 configure do
   enable :sessions
@@ -41,6 +43,8 @@ def get_file_content(file_path)
     render_markdown(@file)
   elsif file_path =~ /.png/
     render_png(@file)
+  elsif file_path =~ /.jpg/
+    render_png(@file)
   else
     @file
   end
@@ -67,7 +71,13 @@ def upload_file(url)
 end
 
 def valid_doc_name?(document_name)
-  !(document_name.to_s.empty? || document_name.strip == '')
+  !(document_name.to_s.empty? || document_name.strip == '') &&
+  extention_supported?(document_name)
+end
+
+def extention_supported?(filename)
+  _, extention = File.basename(filename).split('.')
+  SUPPORTED_EXTENTIONS.include?(extention)
 end
 
 def write_versioned_file(file)

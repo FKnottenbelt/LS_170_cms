@@ -100,7 +100,7 @@ class CmsAcceptTest < CapybaraTestCase
     # I should be redirected to the index page
     assert_current_path '/'
     # where I see my new file in the list
-    assert_content 'test.txt'
+    assert_link 'test.txt'
     # and get a succes message
     assert_content 'test.txt was created.'
   end
@@ -128,7 +128,7 @@ class CmsAcceptTest < CapybaraTestCase
     # I wil still be on the home page
     assert_current_path '/'
     # but my file is gone
-    refute_content "acctest.txt</a>"
+    refute_link "acctest.txt"
   end
 
   def test_user_can_upload_file
@@ -141,15 +141,15 @@ class CmsAcceptTest < CapybaraTestCase
     # I go to the upload file page
     assert_current_path '/files/upload'
     # if I type in an url to a doc
-    fill_in 'document_name', with: "./public/images/icon_edit.png"
+    fill_in 'document_name', with: "./public/images/hibiscus.jpg"
     # And click upload, my doc will be uploaded
     click_button 'Upload'
     # and I will be redirected back to the homepage
     assert_current_path '/'
     # where I see my file
-    assert_content 'icon_edit.png'
+    assert_link 'hibiscus.jpg'
     # and  success message
-    assert_content "icon_edit.png has been uploaded"
+    assert_content "hibiscus.jpg has been uploaded"
   end
 
   def test_user_can_sign_in_as_admin
@@ -224,7 +224,7 @@ class CmsAcceptTest < CapybaraTestCase
     # I should be redirected to the index page
     assert_current_path '/'
     # where I see my new file in the list
-    assert_content 'Newacctest.txt'
+    assert_link 'Newacctest.txt'
     # and get a succes message
     assert_content 'Newacctest.txt was created.'
   end
