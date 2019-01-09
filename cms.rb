@@ -24,6 +24,12 @@ before do
   session[:signed_in] ||= false
 end
 
+helpers do
+  def format_supported_file_format_message
+    formats = SUPPORTED_EXTENTIONS.join(', ')
+    "Supported file formats: #{formats}"
+  end
+end
 ######### routes #########
 
 get '/' do
@@ -116,7 +122,7 @@ post '/files' do
     session[:message] = "#{params[:document_name]} was created."
     redirect '/'
   else
-    session[:message] = "A name is required."
+    session[:message] = "A valid document name is required."
     status 422 # Unprocessable Entity
     erb :file_new, layout: :layout
   end
@@ -146,7 +152,7 @@ post '/:file/duplicate' do
     session[:message] = "#{@new_file_name} was created."
     redirect '/'
   else
-    session[:message] = "A name is required."
+    session[:message] = "A valid document name is required."
     status 422
     erb :file_duplicate
   end
@@ -199,7 +205,7 @@ post '/files/upload' do
   block_not_signed_in_users
 
   url = params[:document_name]
-  if (valid_doc_name?(url))
+  if (valid_doc_name?(url)) && File.exist?(url)
     upload_file(url)
     filename = File.basename(url)
     session[:message] = "#{filename} has been uploaded"

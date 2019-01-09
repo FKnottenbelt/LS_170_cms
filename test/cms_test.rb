@@ -150,7 +150,8 @@ class CmsTest < RackTestCase
     post "/files", { document_name: "" }, admin_session
 
     assert_equal 422, last_response.status
-    assert_includes last_response.body, "A name is required"
+    assert_includes last_response.body,
+       "A valid document name is required."
   end
 
   def test_valid_document_name
@@ -219,7 +220,8 @@ class CmsTest < RackTestCase
     post "/test.txt/duplicate", { document_name: "" }, admin_session
 
     assert_equal 422, last_response.status
-    assert_includes last_response.body, "A name is required"
+    assert_includes last_response.body,
+      "A valid document name is required."
   end
 
   def test_not_signedin_user_can_not_visit_duplicate_doc_page

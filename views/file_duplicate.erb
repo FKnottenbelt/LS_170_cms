@@ -1,3 +1,7 @@
+<div class='format-message'>
+  <%= format_supported_file_format_message %>
+</div>
+
 <div class='center-form'>
   <form action="/<%= @file_name %>/duplicate" method='post'>
     <label for='document_name'>Duplicating file <%= @file_name %>.
@@ -6,3 +10,4 @@
     <button type='submit' name="create">Create</button>
   </form>
 </div>
+

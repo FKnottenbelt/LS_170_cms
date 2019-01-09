@@ -193,3 +193,8 @@ th, td {
   margin-top: 5%;
   position: absolute
 }
+
+.format-message {
+  font-size: .8rem;
+  letter-spacing: 1px;
+}

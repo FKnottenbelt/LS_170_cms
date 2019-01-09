@@ -115,7 +115,7 @@ class CmsAcceptTest < CapybaraTestCase
     # I should be returned to the files new page
     assert_current_path '/files'
     # where I see an error message
-    assert_content 'A name is required.'
+    assert_content "A valid document name is required."
   end
 
   def test_delete_document
