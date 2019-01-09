@@ -1,4 +1,5 @@
 require_relative './racktest_helper'
+require_relative './test_helper'
 
 class CmsTest < RackTestCase
 
