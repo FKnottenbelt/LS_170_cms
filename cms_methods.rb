@@ -1,4 +1,4 @@
-SUPPORTED_EXTENTIONS = ['txt', 'md', 'png', 'jpg']
+SUPPORTED_EXTENTIONS = ['txt', 'md', 'png', 'jpg'].freeze
 
 def render_markdown(file)
   headers["Content-Type"] = "text/html;charset=utf-8"
@@ -46,7 +46,7 @@ end
 
 def valid_doc_name?(document_name)
   !(document_name.to_s.empty? || document_name.strip == '') &&
-  extention_supported?(document_name)
+    extention_supported?(document_name)
 end
 
 def extention_supported?(filename)
@@ -61,15 +61,14 @@ def write_versioned_file(file)
   extention = ".#{extention}" if extention
 
   versioned_file = "#{file_without_extention}_#{timestamp}#{extention}"
-  File.rename(File.join(data_path,file),
-              File.join(data_path,versioned_file))
+  File.rename(File.join(data_path, file),
+              File.join(data_path, versioned_file))
 end
 
 def block_not_signed_in_users
-  if session[:signed_in] == false
-    session[:message] = "You must be signed in to do that."
-    redirect '/'
-  end
+  return if session[:signed_in] == true
+  session[:message] = "You must be signed in to do that."
+  redirect '/'
 end
 
 def user_credentials_path
@@ -93,7 +92,7 @@ def valid_user_credentials?(username, password_attempt)
   user_credentials = load_user_credentials
   stored_password = user_credentials[username]
 
-  if user_credentials.has_key?(username)
+  if user_credentials.key?(username)
     bcrypt_password = BCrypt::Password.new(stored_password)
     bcrypt_password == password_attempt
   else
