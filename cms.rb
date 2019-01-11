@@ -10,11 +10,10 @@ require 'yaml'
 require 'bcrypt'
 require_relative 'cms_methods'
 
-
 configure do
   enable :sessions
   set :session_secret, 'secret'
-  set :erb, :escape_html => true
+  set :erb, escape_html: true
 end
 
 before do
@@ -163,9 +162,14 @@ get '/:file/edit' do
   block_not_signed_in_users
 
   @file_name = params[:file]
-  file_path = File.join(data_path, @file_name)
-  @file_content = File.read(file_path)
-  erb :file_edit, layout: :layout
+  if @file_name =~ /(.png|.jpeg)/
+    session[:message] = 'Pictures can not be edited'
+    redirect '/'
+  else
+    file_path = File.join(data_path, @file_name)
+    @file_content = File.read(file_path)
+    erb :file_edit, layout: :layout
+  end
 end
 
 # Edit a document
@@ -177,7 +181,7 @@ post '/:file/edit' do
   @file_content = params[:edit_box]
 
   write_versioned_file(@file_name)
-  File.write(file_path, @file_content, mode:'w')
+  File.write(file_path, @file_content, mode: 'w')
 
   session[:message] = "#{@file_name} has been updated."
   redirect '/'
@@ -205,7 +209,7 @@ post '/files/upload' do
   block_not_signed_in_users
 
   url = params[:document_name]
-  if (valid_doc_name?(url)) && File.exist?(url)
+  if valid_doc_name?(url) && File.exist?(url)
     upload_file(url)
     filename = File.basename(url)
     session[:message] = "#{filename} has been uploaded"
