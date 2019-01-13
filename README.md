@@ -28,3 +28,18 @@ If the test suite passes, you'll be ready to run the app in a local server:
 ```
 $ ruby cms.rb
 ```
+
+#### Development
+
+To reload the 'required' files like cms_methods.rb, use out-of-process
+reloading:
+
+Install gem `rerun`
+```
+$ gem install rerun
+```
+Run the app by using:
+```
+$ rerun 'ruby cms.rb'
+```
+
