@@ -75,10 +75,12 @@ post '/users/sign_in' do
     session[:signed_in] = true
     @username = session[:username] = params[:username]
     session[:message] = 'Welcome!'
+ #    binding.pry
     redirect '/'
   else
     status 422
     session[:message] = 'Invalid Credentials'
+#       binding.pry
     erb :users_sign_in, layout: :layout
   end
 end
